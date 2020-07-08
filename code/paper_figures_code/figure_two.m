@@ -33,9 +33,6 @@ for iArray = 1:length(array_names)
         end
         
         averaging_prep(iArray,subject_lines{iPlotName,1}) = subject_lines{iPlotName,2};
-%         averaging_prep(iArray,1:min(subject_lines{iPlotName,1})-1) = NaN;
-%         averaging_prep(iArray,max(subject_lines{iPlotName,1})+1:max([array_data.num_good_channels_corrected])) = NaN;
-       
         
         iPlotName = iPlotName + 1;
     
@@ -67,6 +64,7 @@ title('mean channel count over time');
 
 clear averaging_prep
 clear HSV_color
+clear subject_lines
 %% Figure 2b. Mean (se) SNR over all arrays versus DPI.
 
 
@@ -94,9 +92,6 @@ for iArray = 1:length(array_names)
         end
         
         averaging_prep(iArray,subject_lines{iPlotName,1}) = subject_lines{iPlotName,2};
-%         averaging_prep(iArray,1:min(subject_lines{iPlotName,1})-1) = NaN;
-%         averaging_prep(iArray,max(subject_lines{iPlotName,1})+1:max([array_data.num_good_channels_corrected])) = NaN;
-       
         
         iPlotName = iPlotName + 1;
     
@@ -125,6 +120,9 @@ xlabel('days post implantation');
 ylabel('SNR');
 title('mean SNR over time');
 
+clear averaging_prep
+clear HSV_color
+clear subject_lines
 
 %% Saving
 if startsWith(matlab.desktop.editor.getActiveFilename,'C:\Users\calebsponheim\Documents\')
