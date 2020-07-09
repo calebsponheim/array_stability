@@ -16,7 +16,7 @@ for iArray = 1:length(array_names)
     file_count = 1;
     for iFile = 1:size(array_data,2)
         if strcmp(array_data(iFile).array_name,array_names{iArray})
-            good_channels_temp(file_count) = array_data(iFile).num_good_channels_corrected;
+            good_channels_temp(file_count) = array_data(iFile).num_good_channels_corrected / array_data(iFile).total_num_of_channels;
             relative_days_temp(file_count) = array_data(iFile).relative_days;
             file_count = file_count + 1;
         end
@@ -42,8 +42,8 @@ for iArray = 1:length(array_names)
     clear good_channels_temp
     clear relative_days_temp
 end
-ylabel('number of good channels');
-ylim([0 max([array_data.num_good_channels_corrected])]);
+ylabel('proportion good channels');
+ylim([0 1]);
 xlim([0 max([array_data.relative_days])]);
 box off
 
@@ -51,7 +51,7 @@ legend([plots{:}],plot_names)
 
 grid on
 xlabel('days post implantation');
-title('all arrays channel count over time');
+title('all arrays channel yield over time');
 
 clear plot_names
 clear plots
@@ -98,7 +98,7 @@ for iArray = 1:length(array_names)
     clear SNR_temp
     clear relative_days_temp
 end
-ylabel('number of good channels');
+ylabel('Signal to Noise Ratio');
 ylim([0 max([array_data.SNR_good_channels])]);
 xlim([0 max([array_data.relative_days])]);
 box off

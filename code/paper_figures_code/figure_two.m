@@ -14,7 +14,7 @@ for iArray = 1:length(array_names)
     file_count = 1;
     for iFile = 1:size(array_data,2)
         if strcmp(array_data(iFile).array_name,array_names{iArray})
-            good_channels_temp(file_count) = array_data(iFile).num_good_channels_corrected;
+            good_channels_temp(file_count) = array_data(iFile).num_good_channels_corrected / array_data(iFile).total_num_of_channels;
             relative_days_temp(file_count) = array_data(iFile).relative_days;
             file_count = file_count + 1;
         end
@@ -59,7 +59,7 @@ plot(avg_channels,'linewidth',2,'Color',colors(1,:));
 box off
 grid on
 xlabel('days post implantation');
-ylabel('Number of Good Channels');
+ylabel('Channel Yield (proportion of total number)');
 title('mean channel count over time');
 
 clear averaging_prep
