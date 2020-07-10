@@ -46,7 +46,9 @@ avg_channels(isnan(avg_channels)) = 0;
 std_channels = nanstd(averaging_prep,1);
 std_channels(isnan(std_channels)) = 0;
 
-subplot(2,1,1); hold on;
+
+%main plot
+subplot(2,4,1:3); hold on;
 
 HSV_color = rgb2hsv(colors(1,:));
 HSV_color(2) = HSV_color(2) * .6;
@@ -61,6 +63,17 @@ grid on
 xlabel('days post implantation');
 ylabel('Channel Yield (proportion of total number)');
 title('mean channel count over time');
+
+
+%inset plot
+subplot(2,4,4); hold on;
+
+patch([1:length(avg_channels) fliplr(1:length(avg_channels))],[avg_channels+std_channels fliplr(avg_channels-std_channels)],patch_color,'edgecolor','none')
+plot(avg_channels,'linewidth',2,'Color',colors(1,:));
+xlim([0 30])
+
+box off
+xlabel('days post implantation');
 
 clear averaging_prep
 clear HSV_color
@@ -105,7 +118,7 @@ avg_SNR(isnan(avg_SNR)) = 0;
 std_SNR = nanstd(averaging_prep,1);
 std_SNR(isnan(std_SNR)) = 0;
 
-subplot(2,1,2); hold on;
+subplot(2,4,5:7); hold on;
 
 HSV_color = rgb2hsv(colors(2,:));
 HSV_color(2) = HSV_color(2) * .6;
@@ -119,6 +132,17 @@ grid on
 xlabel('days post implantation');
 ylabel('SNR');
 title('mean SNR over time');
+
+
+%inset plot
+subplot(2,4,8); hold on;
+
+patch([1:length(avg_SNR) fliplr(1:length(avg_SNR))],[avg_SNR+std_SNR fliplr(avg_SNR-std_SNR)],patch_color,'edgecolor','none')
+plot(avg_SNR,'linewidth',2,'Color',colors(2,:));
+xlim([0 30])
+
+box off
+xlabel('days post implantation');
 
 clear averaging_prep
 clear HSV_color
