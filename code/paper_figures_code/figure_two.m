@@ -60,9 +60,9 @@ plot(avg_channels,'linewidth',2,'Color',colors(1,:));
 
 box off
 grid on
-xlabel('days post implantation');
+xlabel('Days Post Implantation');
 ylabel('Channel Yield (proportion of total number)');
-title('mean channel count over time');
+title('Average Array Yield Over Time');
 
 
 %inset plot

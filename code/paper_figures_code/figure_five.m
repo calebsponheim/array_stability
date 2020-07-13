@@ -1,6 +1,6 @@
 function figure_five(array_data)
 figure('name','Histograms','visible','off','color','w');
-set(gcf,'pos',[350,400,1000,600])
+set(gcf,'pos',[350,400,1700,400])
 array_names = unique({array_data.array_name});
 all_array_names_temp = {array_data.array_name};
 all_good_channels_temp = [array_data.num_good_channels_corrected];
@@ -12,7 +12,7 @@ for iArray = 1:length(array_names)
     array_max_good_channels(iArray) = max(all_good_channels_temp(array_files_index)./all_total_num_channels_temp(array_files_index));
 end
 
-subplot(2,2,1)
+subplot(1,3,1)
 bar(.1:.1:1,histcounts(array_max_good_channels,0:.1:1))
 xlabel('Portion of Total Channels')
 ylabel('Number of Arrays')
@@ -32,7 +32,7 @@ for iArray = 1:length(array_names)
     end
 end
 
-subplot(2,2,2)
+subplot(1,3,2)
 bar(.1:.1:1,histcounts(array_max_good_channels,0:.1:1))
 xlabel('Portion of Total Channels')
 ylabel('Number of Arrays')
@@ -53,7 +53,7 @@ for iArray = 1:length(array_names)
     end
 end
 
-subplot(2,2,3)
+subplot(1,3,3)
 bar(.1:.1:1,histcounts(array_max_good_channels,0:.1:1))
 xlabel('Portion of Total Channels')
 ylabel('Number of Arrays')
