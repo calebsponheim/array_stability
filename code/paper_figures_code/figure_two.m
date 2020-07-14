@@ -41,11 +41,15 @@ for iArray = 1:length(array_names)
 end
 
 averaging_prep(averaging_prep == 0) = NaN;
+for iColumn = 1:size(averaging_prep,2)
+   averaging_count(iColumn) = sum(~isnan(averaging_prep(:,iColumn)));
+end
 avg_channels = nanmean(averaging_prep,1);
 avg_channels(isnan(avg_channels)) = 0;
 std_channels = nanstd(averaging_prep,1);
 std_channels(isnan(std_channels)) = 0;
-
+std_err_channels = std_channels ./ sqrt(averaging_count);
+std_err_channels(isnan(std_err_channels)) = 0;
 
 %main plot
 subplot(2,4,1:3); hold on;
@@ -54,7 +58,7 @@ HSV_color = rgb2hsv(colors(1,:));
 HSV_color(2) = HSV_color(2) * .6;
 patch_color = hsv2rgb(HSV_color);
 
-patch([1:length(avg_channels) fliplr(1:length(avg_channels))],[avg_channels+std_channels fliplr(avg_channels-std_channels)],patch_color,'edgecolor','none')
+patch([1:length(avg_channels) fliplr(1:length(avg_channels))],[avg_channels+std_err_channels fliplr(avg_channels-std_err_channels)],patch_color,'edgecolor','none')
 plot(avg_channels,'linewidth',2,'Color',colors(1,:));
 
 
@@ -68,7 +72,7 @@ title('Average Array Yield Over Time');
 %inset plot
 subplot(2,4,4); hold on;
 
-patch([1:length(avg_channels) fliplr(1:length(avg_channels))],[avg_channels+std_channels fliplr(avg_channels-std_channels)],patch_color,'edgecolor','none')
+patch([1:length(avg_channels) fliplr(1:length(avg_channels))],[avg_channels+std_err_channels fliplr(avg_channels-std_err_channels)],patch_color,'edgecolor','none')
 plot(avg_channels,'linewidth',2,'Color',colors(1,:));
 xlim([0 30])
 
@@ -78,6 +82,7 @@ xlabel('days post implantation');
 clear averaging_prep
 clear HSV_color
 clear subject_lines
+clear averaging_count
 %% Figure 2b. Mean (se) SNR over all arrays versus DPI.
 
 
@@ -113,10 +118,15 @@ for iArray = 1:length(array_names)
 end
 
 averaging_prep(averaging_prep == 0) = NaN;
+for iColumn = 1:size(averaging_prep,2)
+   averaging_count(iColumn) = sum(~isnan(averaging_prep(:,iColumn)));
+end
 avg_SNR = nanmean(averaging_prep,1);
 avg_SNR(isnan(avg_SNR)) = 0;
 std_SNR = nanstd(averaging_prep,1);
 std_SNR(isnan(std_SNR)) = 0;
+std_err_SNR = std_SNR ./ sqrt(averaging_count);
+std_err_SNR(isnan(std_err_SNR)) = 0;
 
 subplot(2,4,5:7); hold on;
 
@@ -124,7 +134,7 @@ HSV_color = rgb2hsv(colors(2,:));
 HSV_color(2) = HSV_color(2) * .6;
 patch_color = hsv2rgb(HSV_color);
 
-patch([1:length(avg_SNR) fliplr(1:length(avg_SNR))],[avg_SNR-std_SNR fliplr(avg_SNR+std_SNR)],patch_color,'edgecolor','none')
+patch([1:length(avg_SNR) fliplr(1:length(avg_SNR))],[avg_SNR-std_err_SNR fliplr(avg_SNR+std_err_SNR)],patch_color,'edgecolor','none')
 plot(avg_SNR,'linewidth',2,'Color',colors(2,:));
 
 box off
@@ -137,7 +147,7 @@ title('mean SNR over time');
 %inset plot
 subplot(2,4,8); hold on;
 
-patch([1:length(avg_SNR) fliplr(1:length(avg_SNR))],[avg_SNR+std_SNR fliplr(avg_SNR-std_SNR)],patch_color,'edgecolor','none')
+patch([1:length(avg_SNR) fliplr(1:length(avg_SNR))],[avg_SNR-std_err_SNR fliplr(avg_SNR+std_err_SNR)],patch_color,'edgecolor','none')
 plot(avg_SNR,'linewidth',2,'Color',colors(2,:));
 xlim([0 30])
 

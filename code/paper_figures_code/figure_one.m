@@ -9,7 +9,7 @@ set(gcf,'pos',[350,200,1000,750])
 % lasting 9 years as a function of days post implantation (DPI)
 % with an SNR threshold of 1.5 (or 2) (3 line graphs).
 
-subplot(2,2,[1,2]); hold on;
+subplot(2,3,1:3); hold on;
 
 iPlotName = 1;
 for iArray = 1:length(array_names)
@@ -47,7 +47,7 @@ ylim([0 1]);
 xlim([0 max([array_data.relative_days])]);
 box off
 
-legend([plots{:}],plot_names)
+legend([plots{:}],plot_names,'location','northeastoutside')
 
 grid on
 xlabel('days post implantation');
@@ -58,15 +58,15 @@ clear plots
 %% Figure 1b. Example spike waveforms at specific time points from
 % these 3 arrays.
 
-subplot(2,2,3); hold on;
+subplot(2,3,4); hold on;
 
-t = text(0.1,.5,{'waveform examples','go here'});
+t = text(0.1,.5,{'waveform', 'examples','go here'});
 t.FontSize = 24;
 
 
 %% Figure 1c. Mean SNR versus DPI for three example arrays (3 line graphs).
 
-subplot(2,2,4); hold on;
+subplot(2,3,5:6); hold on;
 
 iPlotName = 1;
 for iArray = 1:length(array_names)
@@ -103,7 +103,7 @@ ylim([0 max([array_data.SNR_good_channels])]);
 xlim([0 max([array_data.relative_days])]);
 box off
 
-legend([plots{:}],plot_names)
+legend([plots{:}],plot_names,'location','northeastoutside')
 title('all arrays SNR over time');
 
 grid on

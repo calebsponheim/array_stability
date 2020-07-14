@@ -17,24 +17,26 @@ for iSheet = 1:length(sheets_to_read)
                 array_data(iFile+file_count).folder = cropped_sheet_temp{iFile,1};
                 array_data(iFile+file_count).filename = cropped_sheet_temp{iFile,2};
                 array_data(iFile+file_count).absolute_days = dateNum2days(cropped_sheet_temp{iFile,3});
-                array_data(iFile+file_count).relative_days = dateNum2days(cropped_sheet_temp{iFile,3}) - sheet_implantation_date;
+                array_data(iFile+file_count).relative_days = dateNum2days(cropped_sheet_temp{iFile,3}) ...
+                    - sheet_implantation_date;
                 array_data(iFile+file_count).num_good_channels = cropped_sheet_temp{iFile,4};
                 array_data(iFile+file_count).num_good_channels_corrected = cropped_sheet_temp{iFile,5};
                 array_data(iFile+file_count).SNR_all_channels = cropped_sheet_temp{iFile,6};
                 array_data(iFile+file_count).SNR_good_channels = cropped_sheet_temp{iFile,7};
                 
                 
-                nev2read = [array_data(iFile+file_count).folder array_data(iFile+file_count).filename];
-                data = openNEV(nev2read,'noread','nosave','nomat');
-                elec_with_spikes = unique(double(data.Data.Spikes.Electrode));
-                
-                
-                array_data(iFile+file_count).total_num_of_channels = elec_with_spikes;
-%                 if cropped_sheet_temp{iFile,10} == 0
-%                     array_data(iFile+file_count).total_num_of_channels = 96;
-%                 elseif cropped_sheet_temp{iFile,10} == 1
-%                     array_data(iFile+file_count).total_num_of_channels = 128;
-%                 end
+%                 nev2read = [array_data(iFile+file_count).folder array_data(iFile+file_count).filename];
+%                 data = openNEV(nev2read,'noread','nosave','nomat');
+%                 elec_with_spikes = numel(unique(double(data.Data.Spikes.Electrode)));
+%                 
+%                 
+%                 array_data(iFile+file_count).total_num_of_channels = elec_with_spikes;
+%                 fprintf('processed %s file number %i\n',sheets_to_read{iSheet},iFile)
+                if cropped_sheet_temp{iFile,10} == 0
+                    array_data(iFile+file_count).total_num_of_channels = 96;
+                elseif cropped_sheet_temp{iFile,10} == 1
+                    array_data(iFile+file_count).total_num_of_channels = 128;
+                end
             end
         end
         file_count = size(array_data,2);
@@ -44,4 +46,4 @@ end
 
 %% Save
 
-save([dataDirServer '\Leda Pentousi\all_files_struct_CS'],'array_data_test')
+save([dataDirServer '\Leda Pentousi\array_data'],'array_data')

@@ -13,7 +13,7 @@ end
 figure('name','Long-term, chronic array recordings','visible','off','color','w'); hold on  
 scatter([array_data.relative_days],implant_order,...
     (([array_data.num_good_channels_corrected] ./ [array_data.total_num_of_channels])+.01)*300,...
-    [array_data.SNR_all_channels],'filled')
+    round([array_data.SNR_all_channels],0),'filled')
 box off
 xlabel('days post implant (days)');
 ylabel('Implant Number');

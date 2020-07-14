@@ -13,7 +13,7 @@ for iArray = 1:length(array_names)
 end
 
 subplot(1,3,1)
-bar(.1:.1:1,histcounts(array_max_good_channels,0:.1:1))
+bar(.05:.1:.95,histcounts(array_max_good_channels,0:.1:1))
 xlabel('Portion of Total Channels')
 ylabel('Number of Arrays')
 xticks(0:.1:1)
@@ -33,7 +33,7 @@ for iArray = 1:length(array_names)
 end
 
 subplot(1,3,2)
-bar(.1:.1:1,histcounts(array_max_good_channels,0:.1:1))
+bar(.05:.1:.95,histcounts(array_max_good_channels,0:.1:1))
 xlabel('Portion of Total Channels')
 ylabel('Number of Arrays')
 xticks(0:.1:1)
@@ -54,7 +54,7 @@ for iArray = 1:length(array_names)
 end
 
 subplot(1,3,3)
-bar(.1:.1:1,histcounts(array_max_good_channels,0:.1:1))
+bar(.05:.1:.95,histcounts(array_max_good_channels,0:.1:1))
 xlabel('Portion of Total Channels')
 ylabel('Number of Arrays')
 xticks(0:.1:1)

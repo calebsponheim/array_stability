@@ -10,7 +10,7 @@ all_array_names_temp = {array_data.array_name};
 all_days_temp = [array_data.relative_days];
 all_SNR_temp = [array_data.SNR_all_channels];
 array_SNR = nan(numel(time_points_in_days),numel(array_names));
-areas = {'M1','PMd','PMv'};
+areas = {'PMd','PMv','M1'};
 colors = hsv(numel(areas));
 
 for iArea = 1:numel(areas)
@@ -33,13 +33,31 @@ for iArea = 1:numel(areas)
         end
     end
     
+    for iRow = 1:size(array_SNR,1)
+        SNR_count(iRow) = sum(~isnan(array_SNR(iRow,:)));
+    end
+    
     mean_array_SNR{iArea} = nanmean(array_SNR,2);
+    mean_array_SNR{iArea}(isnan(mean_array_SNR{iArea})) = 0;
+    std_array_SNR{iArea} = nanmean(array_SNR,2);
+    std_err_SNR{iArea} = std_array_SNR{iArea} ./ sqrt(SNR_count');
+    std_err_SNR{iArea}(isnan(std_err_SNR{iArea})) = 0;
+
 end
 %% plotting
 
 figure('name','Long-term, chronic array recordings','visible','off','color','w'); hold on
 for iArea = 1:numel(areas)
-    plots{iArea} = plot(time_points_in_days/one_month,mean_array_SNR{iArea},'o-','linewidth',2,'color',colors(iArea,:));
+HSV_color = rgb2hsv(colors(iArea,:));
+HSV_color(2) = HSV_color(2) * 1;
+patch_color = hsv2rgb(HSV_color);
+
+patch([time_points_in_days/one_month fliplr(time_points_in_days/one_month)],[(mean_array_SNR{iArea}+std_err_SNR{iArea})' fliplr((mean_array_SNR{iArea}-std_err_SNR{iArea})')],patch_color,'edgecolor','none')
+alpha(0.5)
+
+end
+for iArea = 1:numel(areas)
+plots{iArea} = plot(time_points_in_days/one_month,mean_array_SNR{iArea},'o-','linewidth',2,'color',colors(iArea,:));
 end
 xlabel('Months Post Implantation (DPI)')
 xticks(time_points_in_days/one_month);
