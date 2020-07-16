@@ -1,6 +1,6 @@
 function figure_six(array_data)
 
-%% Figure 6: Mean SNR at 3,6,12,18 months, and >2 years over 3 cortical areas (grouped bar graphs).
+%% Figure 6: Mean SNR at 3 month intervals (grouped bar graphs).
 
 
 time_points_in_days = ((365/12)*3):((365/12)*3):(365*3);
