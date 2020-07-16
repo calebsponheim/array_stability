@@ -12,7 +12,7 @@ end
     
 figure('name','Long-term, chronic array recordings','visible','off','color','w'); hold on  
 scatter([array_data.relative_days],implant_order,...
-    (([array_data.num_good_channels_corrected] ./ [array_data.total_num_of_channels])+.01)*300,...
+    (([array_data.num_good_channels_corrected] ./ [array_data.total_num_of_channels])+.01)*75,...
     round([array_data.SNR_all_channels],0),'filled')
 box off
 xlabel('days post implant (days)');
@@ -23,7 +23,7 @@ xticks(0:250:3250)
 ylim([0 max(implant_order)+1])
 colormap(jet);
 colorbar;
-set(gcf,'pos',[0,0,1500,1000])
+set(gcf,'pos',[0,0,750,500])
 set(gca,'TickDir','out')
 
 %% Saving
