@@ -25,6 +25,7 @@ for iSheet = 1:length(sheets_to_read)
                 array_data(iFile+file_count).SNR_good_channels = cropped_sheet_temp{iFile,7};
                 
                 
+                
 %                 nev2read = [array_data(iFile+file_count).folder array_data(iFile+file_count).filename];
 %                 data = openNEV(nev2read,'noread','nosave','nomat');
 %                 elec_with_spikes = numel(unique(double(data.Data.Spikes.Electrode)));
