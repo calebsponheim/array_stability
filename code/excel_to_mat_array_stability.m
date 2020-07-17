@@ -25,19 +25,17 @@ for iSheet = 1:length(sheets_to_read)
                 array_data(iFile+file_count).SNR_good_channels = cropped_sheet_temp{iFile,7};
                 
                 
+                nev2read = [array_data(iFile+file_count).folder array_data(iFile+file_count).filename];
+                data = openNEV(nev2read,'noread','nosave','nomat');
+                elec_with_spikes = numel(unique(double(data.Data.Spikes.Electrode)));
                 
-%                 nev2read = [array_data(iFile+file_count).folder array_data(iFile+file_count).filename];
-%                 data = openNEV(nev2read,'noread','nosave','nomat');
-%                 elec_with_spikes = numel(unique(double(data.Data.Spikes.Electrode)));
-%                 
-%                 
-%                 array_data(iFile+file_count).total_num_of_channels = elec_with_spikes;
-%                 fprintf('processed %s file number %i\n',sheets_to_read{iSheet},iFile)
-                if cropped_sheet_temp{iFile,10} == 0
-                    array_data(iFile+file_count).total_num_of_channels = 96;
-                elseif cropped_sheet_temp{iFile,10} == 1
-                    array_data(iFile+file_count).total_num_of_channels = 128;
-                end
+                array_data(iFile+file_count).total_num_of_channels = elec_with_spikes;
+                fprintf('processed %s file number %i\n',sheets_to_read{iSheet},iFile)
+%                 if cropped_sheet_temp{iFile,10} == 0
+%                     array_data(iFile+file_count).total_num_of_channels = 96;
+%                 elseif cropped_sheet_temp{iFile,10} == 1
+%                     array_data(iFile+file_count).total_num_of_channels = 128;
+%                 end
             end
         end
         file_count = size(array_data,2);
