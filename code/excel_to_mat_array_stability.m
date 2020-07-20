@@ -46,4 +46,4 @@ end
 
 %% Save
 
-save([dataDirServer '\Leda Pentousi\array_data'],'array_data')
+save([dataDirServer '\Leda Pentousi\array_data_up_to_nike'])
