@@ -29,7 +29,6 @@ for iSheet = 1:length(sheets_to_read)
                 data = openNEV(nev2read,'noread','nosave','nomat');
                 elec_with_spikes = numel(unique(double(data.Data.Spikes.Electrode)));
                 
-                
                 array_data(iFile+file_count).total_num_of_channels = elec_with_spikes;
                 fprintf('processed %s file number %i\n',sheets_to_read{iSheet},iFile)
 %                 if cropped_sheet_temp{iFile,10} == 0
