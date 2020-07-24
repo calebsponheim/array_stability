@@ -22,67 +22,125 @@ else
     plotDir1 ='\\prfs.cri.uchicago.edu\nicho-lab\Leda Pentousi\plots\';
 end
 
-sheet2read = 'Roxie_PMd';
-params.keep96chans = false;
-params.rerun = true; 
+sheets_to_read = xl_xlsfinfo(allxls);
 
-% params.keep96chans = true;
-% sheet2read = 'Athena 2'; %'Mack 2';
-% plotDir1 ='\\prfs.cri.uchicago.edu\nicho-lab\Leda Pentousi\plots\Athena 2\M1\';
-    
-
-[~,~,raw] = xlsread(allxls,sheet2read);
-
-nFiles = size(raw,1)-1;
-
-%nChannelsWithSpikes = nan(1,nFiles);
-%dates = cell(1,nFiles);
-
-runTheseFiles = 1:nFiles;
-
-for iFile = runTheseFiles
-    iRow = iFile+1;
-    
-    params.iDate = raw{iRow,1};
-    params.iFolder = raw{iRow,2};
-    params.iName = raw{iRow,3};
-    if ismac
-        params.iFolder = strrep(params.iFolder,'\','/');
-        params.iFolder = strrep(params.iFolder,'//prfs.cri.uchicago.edu','/Volumes');
-    end
-    [hadMoreThan128Channels, isDualRecording, allsnr, nChannelsWithSpikes, nevDate] = ...
-        nev2plotForAll(params,plotDir1);
-    
-    disp(['processed '  params.iFolder params.iName]); 
-    
-    %save output to allFiles.mat
-    varName = params.iName(1:end-4);
-    eval([varName '.fileDate = params.iDate;']);
-    eval([varName '.folder = params.iFolder;']);
-    eval([varName '.name = params.iName;']);
-    eval([varName '.nChannelsWithSpikes = nChannelsWithSpikes;']);
-    eval([varName '.allsnr = allsnr;']);
-    eval([varName '.params = params;']);
-    eval([varName '.hadMoreThan128Channels = hadMoreThan128Channels;']);
-    eval([varName '.isDualRecording = isDualRecording;']);
-    eval([varName '.nevDate = nevDate;']);
-    eval([varName '.avgSNR = nanmean(allsnr);']);
-    eval([varName '.avgSNR_goodChans = nanmean(allsnr(allsnr>params.SNRthreshold));']);
-    
-%     if exist(allDataMat,'file'), save(allDataMat,varName,'-append');
-%     else, save(allDataMat,varName);
-%     end
-    
-    %save output to end of processed xls sheet
-    xlsoutput = cell(1,8);
-    xlsoutput{1} = params.iDate; xlsoutput{2} = params.iFolder;
-    xlsoutput{3} = params.iName; xlsoutput{4} = nevDate;
-    xlsoutput{5} = nChannelsWithSpikes;
-    xlsoutput{7} = nanmean(allsnr); xlsoutput{8} = nanmean(allsnr(allsnr>params.SNRthreshold));
-    xlsoutput{10} = hadMoreThan128Channels; xlsoutput{11} = isDualRecording;
-    
-    xlswrite(allxls,xlsoutput,sheet2read,['A' num2str(iRow)]);
-    clear((varName))
-end
-
+for iSheet = 1:length(sheets_to_read)
+    if contains(sheets_to_read(iSheet),'split')
+        
+        sheet2read = sheets_to_read{iSheet};
+        
+        if strcmp(sheet2read,'Boo-split')
+        elseif strcmp(sheet2read,'Coco-split')
+        elseif strcmp(sheet2read,'Lester-split')
+        elseif strcmp(sheet2read,'Nikki-split')
+        elseif strcmp(sheet2read,'Raju-split')
+        elseif strcmp(sheet2read,'Rockstar-split')
+        elseif strcmp(sheet2read,'Roxie-split')
+        elseif strcmp(sheet2read,'Velma-split')
+        elseif strcmp(sheet2read,'Velmasplitprocessed')
+        else
+            params.keep96chans = false;
+            params.rerun = true;
+            
+            % params.keep96chans = true;
+            % sheet2read = 'Athena 2'; %'Mack 2';
+            % plotDir1 ='\\prfs.cri.uchicago.edu\nicho-lab\Leda Pentousi\plots\Athena 2\M1\';
+            
+            
+            [~,~,raw] = xlsread(allxls,sheet2read);
+            
+            nFiles = size(raw,1)-1;
+            
+            %nChannelsWithSpikes = nan(1,nFiles);
+            %dates = cell(1,nFiles);
+            
+            runTheseFiles = 1:nFiles;
+            diary([sheet2read '.csv'])
+            
+            for iFile = runTheseFiles
+                iRow = iFile+1;
+                
+                params.iDate = raw{iRow,1};
+                params.iFolder = raw{iRow,2};
+                params.iName = raw{iRow,3};
+                
+                if strcmp(params.iName,'c100111_PMv_MIa_SRThold001.nev')
+                elseif ~isnan(params.iFolder)
+                    if ismac
+                        params.iFolder = strrep(params.iFolder,'\','/');
+                        params.iFolder = strrep(params.iFolder,'//prfs.cri.uchicago.edu','/Volumes');
+                    end
+                    [hadMoreThan128Channels, isDualRecording, allsnr, nChannelsWithSpikes, nevDate] = ...
+                        nev2plotForAll(params,plotDir1);
+                    
+                    
+                    % Velma + Others
+                    if contains(lower(params.iName),lower('_PMdaC_M1Ab'))
+                        name = {'PMd','M1'} ; split = 2; num_channels = [64,64];
+                    elseif contains(lower(params.iName),lower('_PMvaC_M1Ab')) || contains(lower(params.iName),lower('PMvAc_M1Ac'))
+                        name = {'PMv','M1'} ; split = 2; num_channels = [64,64];
+                    elseif contains(lower(params.iName),lower('_M1Ab_PMvaC')) || contains(lower(params.iName),lower('_M1_Ab_PMvaC')) || contains(lower(params.iName),lower('_MIab_PMvab_'))
+                        name = {'M1','PMv'} ; split = 2; num_channels = [64,64];
+                    elseif contains(lower(params.iName),lower('_PMdabC_PMvC')) || contains(lower(params.iName),lower('PMdall_PMv'))
+                        name = {'PMd','PMv'} ; split = 3; num_channels = [96,32];
+                    elseif contains(lower(params.iName),lower('M1Abc_PMv')) || contains(lower(params.iName),lower('M1All_PMv')) || contains(lower(params.iName),lower('M1AbcPMv'))
+                        name = {'M1','PMv'} ; split = 3; num_channels = [96,32];
+                    elseif contains(lower(params.iName),lower('PMvAc_PMdAc'))
+                        name = {'PMv','PMd'} ; split = 2; num_channels = [64,64];
+                    elseif contains(lower(params.iName),lower('PMdall_M1')) || contains(lower(params.iName),lower('PMdabc_M1')) || contains(lower(params.iName),lower('PMdallMI'))
+                        name = {'PMd','M1'} ; split = 3;  num_channels = [96,32];
+                    elseif contains(lower(params.iName),lower('PMvall_M1'))
+                        name = {'PMv','M1'} ; split = 3;  num_channels = [96,32];
+                    elseif contains(lower(params.iName),lower('M1all_PMd')) || contains(lower(params.iName),lower('M1allPMd')) || contains(lower(params.iName),lower('MIallPMd')) || contains(lower(params.iName),lower('M1abc_PMd')) || contains(lower(params.iName),lower('M1_PMd'))
+                        name = {'M1','PMd'} ; split = 3;  num_channels = [96,32];
+                    elseif contains(lower(params.iName),lower('PMvabc_PMd')) ||  contains(lower(params.iName),lower('PMvall_PMd'))
+                        name = {'PMv','PMd'} ; split = 3; num_channels = [96,32];
+                    elseif contains(lower(params.iName),lower('PMdc_PMvall'))
+                        name = {'PMd','PMv'} ; split = 1; num_channels = [32,96];
+                        % Boo
+                    elseif contains(lower(params.iName),lower('_M1c_PMdabc')) || contains(lower(params.iName),lower('_M1a_PMdabc'))
+                        name = {'M1','PMd'} ; split = 1; num_channels = [32,96];
+                        % Coco
+                    elseif contains(lower(params.iName),lower('_MIab_PMvab_'))
+                        name = {'M1','PMv'} ; split = 2; num_channels = [64,64];
+                    elseif contains(lower(params.iName),lower('_PMd_M1a_')) || contains(lower(params.iName),lower('_PMd_MIa_'))
+                        name = {'PMd','M1'} ; split = 3; num_channels = [96,32];
+                    elseif contains(lower(params.iName),lower('_PMv_M1a_')) || contains(lower(params.iName),lower('_PMv_MIa_'))
+                        name = {'PMv','M1'} ; split = 3; num_channels = [96,32];
+                    elseif contains(lower(params.iName),lower('_PMdab_MIab_'))
+                        name = {'PMd','M1'} ; split = 2; num_channels = [64,64];
+                    elseif contains(lower(params.iName),lower('_PMdABC_PMvA_'))
+                        name = {'PMd','PMv'} ; split = 3; num_channels = [96,32];
+                        % Lester
+                    elseif contains(lower(params.iName),lower('M1PMdB'))
+                        name = {'M1','PMd'} ; split = 3; num_channels = [96,32];
+                    elseif contains(lower(params.iName),lower('M1PMdB')) || contains(lower(params.iName),lower('M1andPMdA'))
+                        name = {'M1','PMd'} ; split = 3; num_channels = [96,32];
+                        % Nikki (taken care of in first block)
+                        % Raju
+                    elseif contains(lower(params.iName),lower('PMdab_M1')) || contains(lower(params.iName),lower('PMdbc_M1'))  || contains(lower(params.iName),lower('PMdac_M1'))
+                        name = {'PMd','M1d'} ; split = 2; num_channels = [64,64];
+                    elseif contains(lower(params.iName),lower('PMdc_M1all')) || contains(lower(params.iName),lower('PMdb_M1all')) || contains(lower(params.iName),lower('PMdc_M1abc'))
+                        name = {'PMd','M1'} ; split = 1; num_channels = [32,96];
+                        % Rockstar
+                    elseif contains(lower(params.iName),lower('M1bc_PMdab')) || contains(lower(params.iName),lower('M1ab_PMdbc'))
+                        name = {'PMd','M1d'} ; split = 2; num_channels = [64,64];
+                        % Roxie (NOT DOING HER RIGHT NOW BECAUSE SHE HAS THREE-PART FILES
+                    end
+                    
+                    
+                    fprintf('%s, %s, %s, %i, %f, %f , %i\n',...
+                        sheet2read, params.iName,name{1},...
+                        sum(allsnr(1:(split*32))>params.SNRthreshold),nanmean(allsnr(1:(split*32))),...
+                        nanmean(allsnr(allsnr(1:(split*32))>params.SNRthreshold)),num_channels(1))
+                    fprintf('%s, %s, %s, %i, %f, %f, %i \n',...
+                        sheet2read, params.iName, name{2},...
+                        sum(allsnr(((split*32)+1):(4*32))>params.SNRthreshold),nanmean(allsnr(((split*32)+1):(4*32))),...
+                        nanmean(allsnr(allsnr(((split*32)+1):(4*32))>params.SNRthreshold)),num_channels(2))
+                end
+            end % for iFile
+        end
+    end % if iSheet
+    diary off
+end % for iSheet
 

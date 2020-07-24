@@ -73,9 +73,11 @@ for iArray = 1:length(array_names)
     file_count = 1;
     for iFile = 1:size(array_data,2)
         if strcmp(array_data(iFile).array_name,array_names{iArray})
-            SNR_temp(file_count) = array_data(iFile).SNR_good_channels;
-            relative_days_temp(file_count) = array_data(iFile).relative_days;
-            file_count = file_count + 1;
+            if ~ischar(array_data(iFile).SNR_all_channels)
+                SNR_temp(file_count) = array_data(iFile).SNR_all_channels;
+                relative_days_temp(file_count) = array_data(iFile).relative_days;
+                file_count = file_count + 1;
+            end
         end
     end
     color = [rand rand rand];
@@ -99,7 +101,7 @@ for iArray = 1:length(array_names)
     clear relative_days_temp
 end
 ylabel('Signal to Noise Ratio');
-ylim([0 max([array_data.SNR_good_channels])]);
+ylim([0 max([array_data.SNR_all_channels])]);
 xlim([0 max([array_data.relative_days])]);
 box off
 

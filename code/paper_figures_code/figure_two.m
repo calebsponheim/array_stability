@@ -20,21 +20,21 @@ for iArray = 1:length(array_names)
         end
     end
     
-        plot_names{iPlotName} = strrep(array_names{iArray},'_',' ');
-        quad_fit_to_good_channels = polyfit(relative_days_temp,good_channels_temp,1);
-        quad_fit_to_good_channels = ...
-            polyval(quad_fit_to_good_channels,min(relative_days_temp):max(relative_days_temp));
-        
-        if max(quad_fit_to_good_channels)>128
-            disp('stop, who are you even')
-        else
-            subject_lines{iPlotName,1} = min(relative_days_temp):max(relative_days_temp);
-            subject_lines{iPlotName,2} = quad_fit_to_good_channels;
-        end
-        
-        averaging_prep(iArray,subject_lines{iPlotName,1}) = subject_lines{iPlotName,2};
-        
-        iPlotName = iPlotName + 1;
+    plot_names{iPlotName} = strrep(array_names{iArray},'_',' ');
+    quad_fit_to_good_channels = polyfit(relative_days_temp,good_channels_temp,1);
+    quad_fit_to_good_channels = ...
+        polyval(quad_fit_to_good_channels,min(relative_days_temp):max(relative_days_temp));
+    
+    if max(quad_fit_to_good_channels)>128
+        disp('stop, who are you even')
+    else
+        subject_lines{iPlotName,1} = min(relative_days_temp):max(relative_days_temp);
+        subject_lines{iPlotName,2} = quad_fit_to_good_channels;
+    end
+    
+    averaging_prep(iArray,subject_lines{iPlotName,1}) = subject_lines{iPlotName,2};
+    
+    iPlotName = iPlotName + 1;
     
     clear good_channels_temp
     clear relative_days_temp
@@ -42,7 +42,7 @@ end
 
 averaging_prep(averaging_prep == 0) = NaN;
 for iColumn = 1:size(averaging_prep,2)
-   averaging_count(iColumn) = sum(~isnan(averaging_prep(:,iColumn)));
+    averaging_count(iColumn) = sum(~isnan(averaging_prep(:,iColumn)));
 end
 avg_channels = nanmean(averaging_prep,1);
 avg_channels(isnan(avg_channels)) = 0;
@@ -91,27 +91,29 @@ for iArray = 1:length(array_names)
     file_count = 1;
     for iFile = 1:size(array_data,2)
         if strcmp(array_data(iFile).array_name,array_names{iArray})
-            SNR_temp(file_count) = array_data(iFile).SNR_all_channels;
-            relative_days_temp(file_count) = array_data(iFile).relative_days;
-            file_count = file_count + 1;
+            if ~ischar(array_data(iFile).SNR_all_channels)
+                SNR_temp(file_count) = array_data(iFile).SNR_all_channels;
+                relative_days_temp(file_count) = array_data(iFile).relative_days;
+                file_count = file_count + 1;
+            end
         end
     end
     
-        plot_names{iPlotName} = strrep(array_names{iArray},'_',' ');
-        quad_fit_to_SNR = polyfit(relative_days_temp,SNR_temp,1);
-        quad_fit_to_SNR = ...
-            polyval(quad_fit_to_SNR,min(relative_days_temp):max(relative_days_temp));
-        
-        if max(quad_fit_to_SNR)>128
-            disp('stop, who are you even')
-        else
-            subject_lines{iPlotName,1} = min(relative_days_temp):max(relative_days_temp);
-            subject_lines{iPlotName,2} = quad_fit_to_SNR;
-        end
-        
-        averaging_prep(iArray,subject_lines{iPlotName,1}) = subject_lines{iPlotName,2};
-        
-        iPlotName = iPlotName + 1;
+    plot_names{iPlotName} = strrep(array_names{iArray},'_',' ');
+    quad_fit_to_SNR = polyfit(relative_days_temp,SNR_temp,1);
+    quad_fit_to_SNR = ...
+        polyval(quad_fit_to_SNR,min(relative_days_temp):max(relative_days_temp));
+    
+    if max(quad_fit_to_SNR)>128
+        disp('stop, who are you even')
+    else
+        subject_lines{iPlotName,1} = min(relative_days_temp):max(relative_days_temp);
+        subject_lines{iPlotName,2} = quad_fit_to_SNR;
+    end
+    
+    averaging_prep(iArray,subject_lines{iPlotName,1}) = subject_lines{iPlotName,2};
+    
+    iPlotName = iPlotName + 1;
     
     clear SNR_temp
     clear relative_days_temp
@@ -119,7 +121,7 @@ end
 
 averaging_prep(averaging_prep == 0) = NaN;
 for iColumn = 1:size(averaging_prep,2)
-   averaging_count(iColumn) = sum(~isnan(averaging_prep(:,iColumn)));
+    averaging_count(iColumn) = sum(~isnan(averaging_prep(:,iColumn)));
 end
 avg_SNR = nanmean(averaging_prep,1);
 avg_SNR(isnan(avg_SNR)) = 0;

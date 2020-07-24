@@ -1,6 +1,6 @@
 % Run all Figure Code
 
-load('C:\Users\calebsponheim\Documents\git\array_stability\data\all_files_struct_CS.mat')
+load('C:\Users\calebsponheim\Documents\git\array_stability\data\array_data_with_split.mat')
 
 %%
 
