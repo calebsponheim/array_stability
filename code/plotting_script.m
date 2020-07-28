@@ -2,7 +2,7 @@
 
 %% First, Load Data
 
-load('C:\Users\calebsponheim\Documents\git\array_stability\data\all_files_struct_CS.mat','array_data');
+load('C:\Users\calebsponheim\Documents\git\array_stability\data\array_data.mat','array_data');
 
 %% Per-Subject Summary Plot
 

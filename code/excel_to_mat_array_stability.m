@@ -7,9 +7,10 @@ file_count = 0;
 array_data = [];
 for iSheet = 1:length(sheets_to_read)
     if contains(sheets_to_read(iSheet),'_')
-        [~,~,uncropped_sheet_temp] = xlsread(xls2read,sheets_to_read{iSheet});
-        sheet_implantation_date = dateNum2days(cell2mat(uncropped_sheet_temp(2,4)));
-        cropped_sheet_temp = uncropped_sheet_temp(3:end,2:12);
+        uncropped_sheet_temp = ...
+            table2cell(readtable(xls2read,'FileType','spreadsheet','Sheet',sheets_to_read{iSheet},'ReadVariableNames',false));
+        sheet_implantation_date = dateNum2days(cell2mat(uncropped_sheet_temp(1,4)));
+        cropped_sheet_temp = uncropped_sheet_temp(2:end,2:12);
         for iFile = 1:size(cropped_sheet_temp,1)
             if ~isnan(cell2mat(cropped_sheet_temp(iFile,1)))
                 array_data(iFile+file_count).array_name = sheets_to_read{iSheet};
@@ -45,14 +46,19 @@ for iSheet = 1:length(sheets_to_read)
                     array_data(iFile+file_count).total_num_of_channels = 96;
                 elseif cropped_sheet_temp{iFile,10} == 1
                     array_data(iFile+file_count).total_num_of_channels = 128;
+                elseif isempty(cropped_sheet_temp{iFile,10})
+                    array_data(iFile+file_count).total_num_of_channels = 96;
                 end
             end
         end
         file_count = size(array_data,2);
     else
     end
+    
+    disp(['completed ' sheets_to_read{iSheet}])
 end
 
 %% Save
 
-save([dataDirServer '\Leda Pentousi\array_data_with_split'],'array_data')
+save([dataDirServer '\Leda Pentousi\array_data'],'array_data')
+save('.\data\array_data','array_data')
