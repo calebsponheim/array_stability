@@ -50,8 +50,8 @@ box off
 legend([plots{:}],plot_names,'location','northeastoutside')
 
 grid on
-xlabel('days post implantation');
-title('all arrays channel yield over time');
+xlabel('Days Post Implantation');
+title('Long-Lasting Array Channel Yield Over Time');
 
 clear plot_names
 clear plots
@@ -106,10 +106,10 @@ xlim([0 max([array_data.relative_days])]);
 box off
 
 legend([plots{:}],plot_names,'location','northeastoutside')
-title('all arrays SNR over time');
+title('Long-Lasting Array SNR Over Time');
 
 grid on
-xlabel('days post implantation');
+xlabel('Days Post Implantation');
 
 %% Save
 

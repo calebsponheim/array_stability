@@ -60,6 +60,7 @@ patch_color = hsv2rgb(HSV_color);
 
 patch([1:length(avg_channels) fliplr(1:length(avg_channels))],[avg_channels+std_err_channels fliplr(avg_channels-std_err_channels)],patch_color,'edgecolor','none')
 plot(avg_channels,'linewidth',2,'Color',colors(1,:));
+xlim([0 1500])
 
 
 box off
@@ -138,6 +139,7 @@ patch_color = hsv2rgb(HSV_color);
 
 patch([1:length(avg_SNR) fliplr(1:length(avg_SNR))],[avg_SNR-std_err_SNR fliplr(avg_SNR+std_err_SNR)],patch_color,'edgecolor','none')
 plot(avg_SNR,'linewidth',2,'Color',colors(2,:));
+xlim([0 1500])
 
 box off
 grid on
