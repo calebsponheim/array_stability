@@ -1,14 +1,21 @@
 function figure_one(array_data)
+% Figure 1a. Examples from 3 arrays lasting over 2 years including Mack’s
+% lasting 9 years as a function of days post implantation (DPI)
+% with an SNR threshold of 1.5 (or 2) (3 line graphs).
 
+% This figure, I think, is the real summary figure. It only shows results
+% from arrays that lasted longer than two years, but we have a lot of
+% those.
+%%
 figure('name','Long-term, chronic array recordings','visible','off','color','w');
 box off
 array_names = unique({array_data.array_name});
 colors = jet(length(array_names));
 set(gcf,'pos',[350,200,1000,750])
-%% Figure 1a. Examples from 3 arrays lasting over 2 years including Mack’s
-% lasting 9 years as a function of days post implantation (DPI)
-% with an SNR threshold of 1.5 (or 2) (3 line graphs).
 
+%%
+
+% subplot spans were used to make the plots size correctly.
 subplot(2,3,1:3); hold on;
 
 iPlotName = 1;
@@ -58,6 +65,12 @@ clear plots
 %% Figure 1b. Example spike waveforms at specific time points from
 % these 3 arrays.
 
+
+% This literally just makes space for the waveform pictures that I put in
+% manually post-hoc. If I have time (hello readers), I'll write code to
+% actually pull in specific waveforms from specific files and have it be
+% all nice. for now, it's hacky. Whoops!
+
 subplot(2,3,4); hold on;
 
 t = text(0.1,.5,{'waveform', 'examples','go here'});
@@ -80,11 +93,12 @@ for iArray = 1:length(array_names)
             end
         end
     end
-    color = [rand rand rand];
     
     if max(relative_days_temp) > (365*2)
         plot_names{iPlotName} = strrep(array_names{iArray},'_',' ');
         plot(relative_days_temp,SNR_temp,'.','linewidth',1,'color',colors(iArray,:));
+        
+        % Linear Regression to each array's data points.
         quad_fit_to_SNR = polyfit(relative_days_temp,SNR_temp,1);
         quad_fit_to_SNR = polyval(quad_fit_to_SNR,min(relative_days_temp):.1:max(relative_days_temp));
         

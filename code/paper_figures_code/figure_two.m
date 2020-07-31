@@ -1,6 +1,10 @@
 function figure_two(array_data)
+% This Figure plots the Signal-to-noise ratio and Channel Yield (in
+% percentage) for the array stability project. Includes a subplot
+% highlighting the first 30 days after implant.
 
-figure('name','Long-term, chronic array recordings','visible','off','color','w');
+%% initializing figure
+figure('name','SNR and Channel Yield over time, all arrays','visible','off','color','w');
 box off
 array_names = unique({array_data.array_name});
 colors = autumn(4);
@@ -21,6 +25,8 @@ for iArray = 1:length(array_names)
     end
     
     plot_names{iPlotName} = strrep(array_names{iArray},'_',' ');
+    
+    % linear regression of all points for each array separately
     quad_fit_to_good_channels = polyfit(relative_days_temp,good_channels_temp,1);
     quad_fit_to_good_channels = ...
         polyval(quad_fit_to_good_channels,min(relative_days_temp):max(relative_days_temp));
@@ -44,6 +50,17 @@ averaging_prep(averaging_prep == 0) = NaN;
 for iColumn = 1:size(averaging_prep,2)
     averaging_count(iColumn) = sum(~isnan(averaging_prep(:,iColumn)));
 end
+
+% There is a challenge associated with averaging this kind of
+% non-continuous data over time; you can't simply take a mean because there
+% isn't data at every time point. not only that, but there are different
+% numbers of data points at each time point as well. The approach I used
+% here was to calculate a linear regression fit to all of the data points
+% available for each array, bounded by the first and last recording point,
+% giving me a bunch of lines. Then, I averaged across all the lines that
+% were available for each time point. this creates some weird edge effects,
+% and I'm sure I could do it better.
+
 avg_channels = nanmean(averaging_prep,1);
 avg_channels(isnan(avg_channels)) = 0;
 std_channels = nanstd(averaging_prep,1);
@@ -54,10 +71,13 @@ std_err_channels(isnan(std_err_channels)) = 0;
 %main plot
 subplot(2,4,1:3); hold on;
 
+% creating a de-saturated, transparent version of the line color for the
+% error bars:
 HSV_color = rgb2hsv(colors(1,:));
 HSV_color(2) = HSV_color(2) * .6;
 patch_color = hsv2rgb(HSV_color);
 
+% patch() is a great way to create error bars.
 patch([1:length(avg_channels) fliplr(1:length(avg_channels))],[avg_channels+std_err_channels fliplr(avg_channels-std_err_channels)],patch_color,'edgecolor','none')
 plot(avg_channels,'linewidth',2,'Color',colors(1,:));
 xlim([0 1500])
@@ -86,6 +106,9 @@ clear subject_lines
 clear averaging_count
 %% Figure 2b. Mean (se) SNR over all arrays versus DPI.
 
+% I used the same approach as the channel yielf for SNR - calculate linear
+% regressions for each array's data, then average all of the fits together.
+% idk maybe it's okay, maybe it's not. 
 
 iPlotName = 1;
 for iArray = 1:length(array_names)
@@ -163,6 +186,9 @@ clear HSV_color
 clear subject_lines
 
 %% Saving
+
+% if you're on my computer, then it saves in the right spot. if not, then
+% it just dumps the figure file in your local directory. whoops!
 if startsWith(matlab.desktop.editor.getActiveFilename,'C:\Users\calebsponheim\Documents\')
     saveas(gcf,'C:\Users\calebsponheim\Documents\git\array_stability\figures\paper_figures\figure_two.png');
 else

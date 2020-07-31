@@ -1,6 +1,9 @@
+% Please refer to the documentation in "plotFromList.m" for the full
+% explanation for this script.
 
-%make a pic from a list of files (I used this to rerun some Athena files
-%that had channels from more than one arrays).
+% THIS version of the script was meant to deal with previously unprocessed
+% files in a specific sheet of the big excel workbook.
+
 
 %addpath(genpath(pwd));
 clear; close all

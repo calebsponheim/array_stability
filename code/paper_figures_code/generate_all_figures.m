@@ -1,8 +1,9 @@
 % Run all Figure Code
 
+% load current version of the data
 load('C:\Users\calebsponheim\Documents\git\array_stability\data\array_data.mat')
 
-%%
+%% Re-generate all figures
 
 figure_one(array_data)
 

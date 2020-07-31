@@ -1,5 +1,6 @@
 function plot_all_data(array_data)
-
+% This script plots each array, and plots its linear regression. Adapted
+% from Vassilis Papadourakis.
 %% read data in
 %read data from xls
 array_names = unique({array_data.array_name});
@@ -38,7 +39,6 @@ xlim([0 max([array_data.relative_days])]);
 
 ax = gca; ax.FontSize = 14; ax.LineWidth = 1.5;  ax.XColor = 'k'; ax.YColor = 'k';
 box off
-% ax.XTick = days; ax.XTickLabel = xlabels; ax.XTickLabelRotation = 90;
 grid on
 xlabel('days post implantation');
 title('all arrays channel count over time','FontSize',18);
@@ -50,8 +50,6 @@ if startsWith(matlab.desktop.editor.getActiveFilename,'C:\Users\calebsponheim\Do
 else
     saveas(gcf,[array_names{iArray} '_summary.png']);
 end
-% saveas(gcf,[params.dataDirServer 'Leda Pentousi\plots\summary plots\' params.monkeyIN ' ' params.arrayIN ' signal quality.png']);
-%     export_fig([params.dataDirServer 'Leda Pentousi\plots\summary plots\' params.monkeyIN ' ' params.arrayIN ' signal quality_units_0-100.png']);
 close(gcf);
 
 end

@@ -1,5 +1,12 @@
 function figure_four(array_data)
-%% Figure 4. % of arrays with yield >20% over different time points:
+% Figure 4. percent of arrays with yield >20% over different time points:
+% The goal of this graph is to see how the yield more systematically
+% decreases, communicating kind of a set of "expectations" you might have
+% about your given array's performance over time.
+
+% three different channel yield thresholds. 
+
+%% Calculating everything
 
 time_points_in_days = ((365/12)*3):((365/12)*3):(365*3);
 one_month = 365/12;
@@ -24,7 +31,14 @@ for iThresh = 1:size(yield_threshold,2)
         for iTimePoint = 1:length(time_points_in_days)
             file_above_thresh = 0;
             for iFile = 1:length(array_relative_days)
-                if (((time_points_in_days(iTimePoint)- one_month) < array_relative_days(iFile)) && (array_relative_days(iFile) < (time_points_in_days(iTimePoint)+ one_month))) && (array_num_good_channels(iFile) > array_yield_thresh(iFile))
+                % we take a window of time around each three month point in
+                % order to capture enough data points to make an average.
+                % We have no guarantee that enough data was recorded at
+                % exact three-month intervals, so we have to average across
+                % a rough time window.
+                if (((time_points_in_days(iTimePoint)- one_month) < array_relative_days(iFile)) && ...
+                        (array_relative_days(iFile) < (time_points_in_days(iTimePoint)+ one_month))) && ...
+                        (array_num_good_channels(iFile) > array_yield_thresh(iFile))
                     file_above_thresh = 1;
                 end
             end
@@ -36,12 +50,15 @@ for iThresh = 1:size(yield_threshold,2)
     clear num_arrays_above_threshold
 end
 
-%% plotting
-colors = winter(3);
+%% plotting everything
+colors = winter(3); % the only color scale, with three colors, that doesn't include bright yellow (yuck)
 figure('name','Long-term, chronic array recordings','visible','off','color','w'); hold on
-plot(time_points_in_days/one_month,percent_arrays_above_threshold(:,1),'o-','linewidth',2,'color',colors(1,:),'Displayname','10% Yield')
-plot(time_points_in_days/one_month,percent_arrays_above_threshold(:,2),'o-','linewidth',2,'color',colors(2,:),'Displayname','20% Yield')
-plot(time_points_in_days/one_month,percent_arrays_above_threshold(:,3),'o-','linewidth',2,'color',colors(3,:),'Displayname','40% Yield')
+plot(time_points_in_days/one_month,percent_arrays_above_threshold(:,1)...
+    ,'o-','linewidth',2,'color',colors(1,:),'Displayname','10% Yield')
+plot(time_points_in_days/one_month,percent_arrays_above_threshold(:,2)...
+    ,'o-','linewidth',2,'color',colors(2,:),'Displayname','20% Yield')
+plot(time_points_in_days/one_month,percent_arrays_above_threshold(:,3)...
+    ,'o-','linewidth',2,'color',colors(3,:),'Displayname','40% Yield')
 xlabel('Months Post Implantation')
 legend()
 xticks(time_points_in_days/one_month);

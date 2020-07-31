@@ -1,6 +1,21 @@
 
-%make a pic from a list of files (I used this to rerun some Athena files
-%that had channels from more than one arrays).
+%make a pic from a list of files in an excel file.
+
+% This script was originally written by Vassilis Papadourakis before he
+% left and joined the Bezos Boys. The original intention of the script was
+% to plot individual recordings and their SNR, and also read/write data
+% from a massive excel spreadsheet. 
+
+% THIS version of that script no longer plots anything. Instead, its sole
+% purpose is to read in .nev blackrock files, measure the peak-to-trough
+% amplitude of its spikes per channel, and report the SNR of those channels
+% back. Right now I have them being written using diary() to a log file.
+% It's not elegant.
+
+
+% THIS SCRIPT IS CURRENTLY SET UP TO PROCESS SPLIT ARRAY FILES, NOTHING
+% ELSE. you'll need to change the code (and presumably, this comment), if
+% you want to process other tabs of the excel file.
 
 %addpath(genpath(pwd));
 clear; close all
@@ -22,13 +37,17 @@ else
     plotDir1 ='\\prfs.cri.uchicago.edu\nicho-lab\Leda Pentousi\plots\';
 end
 
+% this is is a third-party tool that reads the excel file sheet names:
 sheets_to_read = xl_xlsfinfo(allxls);
+%
+
 
 for iSheet = 1:length(sheets_to_read)
-    if contains(sheets_to_read(iSheet),'split')
+    if contains(sheets_to_read(iSheet),'split') % this is what makes it split only.
         
         sheet2read = sheets_to_read{iSheet};
         
+        % skips already-processed split sheets
         if strcmp(sheet2read,'Boo-split')
         elseif strcmp(sheet2read,'Coco-split')
         elseif strcmp(sheet2read,'Lester-split')
@@ -38,6 +57,8 @@ for iSheet = 1:length(sheets_to_read)
         elseif strcmp(sheet2read,'Roxie-split')
         elseif strcmp(sheet2read,'Velma-split')
         elseif strcmp(sheet2read,'Velmasplitprocessed')
+        %
+        
         else
             params.keep96chans = false;
             params.rerun = true;
@@ -73,6 +94,15 @@ for iSheet = 1:length(sheets_to_read)
                     [hadMoreThan128Channels, isDualRecording, allsnr, nChannelsWithSpikes, nevDate] = ...
                         nev2plotForAll(params,plotDir1);
                     
+                    % REGEX MADNESS: this terrible set of if statements is
+                    % to accomodate all of the different types of ways that
+                    % people name files!!! it's terrible. god, it's
+                    % terrible. Split .nev files have some portion
+                    % dedicated to one array, while the rest is dedicated
+                    % to a different array. the number of channels and the
+                    % location of the split, and the identity of the two
+                    % arrays (it's always two, unless it's not) depends on
+                    % the file and subject.
                     
                     % Velma + Others
                     if contains(lower(params.iName),lower('_PMdaC_M1Ab'))
@@ -97,10 +127,10 @@ for iSheet = 1:length(sheets_to_read)
                         name = {'PMv','PMd'} ; split = 3; num_channels = [96,32];
                     elseif contains(lower(params.iName),lower('PMdc_PMvall'))
                         name = {'PMd','PMv'} ; split = 1; num_channels = [32,96];
-                        % Boo
+                        % Boo-specific regex
                     elseif contains(lower(params.iName),lower('_M1c_PMdabc')) || contains(lower(params.iName),lower('_M1a_PMdabc'))
                         name = {'M1','PMd'} ; split = 1; num_channels = [32,96];
-                        % Coco
+                        % Coco-specific regex
                     elseif contains(lower(params.iName),lower('_MIab_PMvab_'))
                         name = {'M1','PMv'} ; split = 2; num_channels = [64,64];
                     elseif contains(lower(params.iName),lower('_PMd_M1a_')) || contains(lower(params.iName),lower('_PMd_MIa_'))
@@ -125,7 +155,7 @@ for iSheet = 1:length(sheets_to_read)
                         % Rockstar
                     elseif contains(lower(params.iName),lower('M1bc_PMdab')) || contains(lower(params.iName),lower('M1ab_PMdbc'))
                         name = {'PMd','M1d'} ; split = 2; num_channels = [64,64];
-                        % Roxie (NOT DOING HER RIGHT NOW BECAUSE SHE HAS THREE-PART FILES
+                        % Roxie (NOT DOING HER RIGHT NOW BECAUSE SHE HAS THREE-PART FILES)
                     end
                     
                     
@@ -141,6 +171,6 @@ for iSheet = 1:length(sheets_to_read)
             end % for iFile
         end
     end % if iSheet
-    diary off
+    diary off % very important to turn off diary, since it will continue to log everything if you don't turn it off. 
 end % for iSheet
 

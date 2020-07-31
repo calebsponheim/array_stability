@@ -1,4 +1,6 @@
 function [days] = dateNum2days(date)
+% This function changes a date format into an absolute number of days
+% (since AD 0??? I guess??). helps for all sorts of things.
 
 if numel(num2str(date))==6
 %string must be YYMMDD (numel = 6)
@@ -18,7 +20,7 @@ d = str2double(date_temp(5:6));
 days = 365*y + 30*m + d;
 
 else
-    disp('dateString2days.m: dateString length is not 6. Returning 0 days.')
+    fprintf('dateString2days.m: dateString %i length is not 6. Returning 0 days. Check your data. \n',date)
     days = 0;
 end
 end%function

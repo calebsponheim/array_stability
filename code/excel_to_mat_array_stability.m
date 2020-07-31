@@ -1,12 +1,22 @@
 %% Script Intention: Turn Array Stability Excel File into Matlab Matfile struct.
+
+% This script reads the massive excel file where most of the hard data entry
+% work was done, and converts it to a much nicer-to-handle matlab struct,
+% from which all of our figures are generated. Takes a minute to run, so
+% get a coffee or something while you do it.
+
+
+%%
 dataDirServer = '\\prfs.cri.uchicago.edu\nicho-lab\';
 xls2read = [dataDirServer 'Leda Pentousi\all_files2_CS.xlsx'];
 sheets_to_read = xl_xlsfinfo(xls2read);
 
 file_count = 0;
 array_data = [];
+
+% only two nested for-loops! lol
 for iSheet = 1:length(sheets_to_read)
-    if contains(sheets_to_read(iSheet),'_')
+    if contains(sheets_to_read(iSheet),'_') % this is a very brittle way to ignore the bad sheets in the excel workbook.
         uncropped_sheet_temp = ...
             table2cell(readtable(xls2read,'FileType','spreadsheet','Sheet',sheets_to_read{iSheet},'ReadVariableNames',false));
         sheet_implantation_date = dateNum2days(cell2mat(uncropped_sheet_temp(1,4)));
@@ -14,17 +24,17 @@ for iSheet = 1:length(sheets_to_read)
         for iFile = 1:size(cropped_sheet_temp,1)
             if ~isnan(cell2mat(cropped_sheet_temp(iFile,1)))
                 
-                % === Duplicate File Detection ===
+                % === Duplicate File Detection ===========================
                 if (iFile > 1) && ...
-                    (array_data(iFile+file_count-1).absolute_days == dateNum2days(cropped_sheet_temp{iFile,3})) && ...
-                    (array_data(iFile+file_count-1).num_good_channels == cropped_sheet_temp{iFile,4}) && ...
-                    (array_data(iFile+file_count-1).SNR_all_channels == cropped_sheet_temp{iFile,6})
+                        (array_data(iFile+file_count-1).absolute_days == dateNum2days(cropped_sheet_temp{iFile,3})) && ...
+                        (array_data(iFile+file_count-1).num_good_channels == cropped_sheet_temp{iFile,4}) && ...
+                        (array_data(iFile+file_count-1).SNR_all_channels == cropped_sheet_temp{iFile,6})
                     
                     % If this is true, then SKIP.
                     fprintf('%s is a duplicate! removing from final list. \n',cropped_sheet_temp{iFile,2});
                     
                     file_count = file_count - 1;
-                    % ================================
+                % ========================================================
                 else
                     
                     array_data(iFile+file_count).array_name = sheets_to_read{iSheet};
@@ -48,12 +58,23 @@ for iSheet = 1:length(sheets_to_read)
                     end
                     array_data(iFile+file_count).brain_area = cropped_sheet_temp{iFile,8};
                     
-                    %                 nev2read = [array_data(iFile+file_count).folder array_data(iFile+file_count).filename];
-                    %                 data = openNEV(nev2read,'noread','nosave','nomat');
-                    %                 elec_with_spikes = numel(unique(double(data.Data.Spikes.Electrode)));
-                    %
-                    %                 array_data(iFile+file_count).total_num_of_channels = elec_with_spikes;
-                    %                 fprintf('processed %s file number %i\n',sheets_to_read{iSheet},iFile)
+                    
+                    % THIS code (currently commented out) is meant to get
+                    % the ACTUAL number of electrodes from each .nev file
+                    % and put it into the mat struct, since we didn't have
+                    % that information in the excel file. IT TAKES FOREVER
+                    % because it requires you to load 4000+ .nev files.
+                    % We've since figures out some workarounds, but it's
+                    % here if you need it:
+                    
+%                     nev2read = [array_data(iFile+file_count).folder array_data(iFile+file_count).filename];
+%                     data = openNEV(nev2read,'noread','nosave','nomat');
+%                     elec_with_spikes = numel(unique(double(data.Data.Spikes.Electrode)));
+%                     
+%                     array_data(iFile+file_count).total_num_of_channels = elec_with_spikes;
+%                     fprintf('processed %s file number %i\n',sheets_to_read{iSheet},iFile)
+                    
+                    
                     if ~isnan(cropped_sheet_temp{iFile,11})
                         array_data(iFile+file_count).total_num_of_channels = cropped_sheet_temp{iFile,11};
                     elseif cropped_sheet_temp{iFile,10} == 0

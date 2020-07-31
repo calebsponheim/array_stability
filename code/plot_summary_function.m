@@ -1,7 +1,10 @@
 function [] = plot_summary_function(array_data)
+% this script plots an individual array's recording's Channel yield over
+% time.
+
 
 %% read data in
-%read data from xls
+%read data from mat-file
 array_names = unique({array_data.array_name});
 
 
@@ -17,11 +20,7 @@ for iArray = 1:length(array_names)
         end
     end
     figure('color','w','visible','off'); hold on
-    
-    % yieldPRC = round(100*nChannelsWithSpikes/96);
-    % plot(days,yieldPRC,'-o','linewidth',3);
-    % ylim([0 100]); ylabel('percent of channels with spikes');
-    
+        
     plot(relative_days_temp,good_channels_temp,'o','linewidth',2);
     ylabel('number of good channels');
     ylim([0 100]);
@@ -29,11 +28,9 @@ for iArray = 1:length(array_names)
     
     ax = gca; ax.FontSize = 14; ax.LineWidth = 1.5;  ax.XColor = 'k'; ax.YColor = 'k';
     box off
-    % ax.XTick = days; ax.XTickLabel = xlabels; ax.XTickLabelRotation = 90;
     grid on
     xlabel('days post implantation');
     title([strrep(array_names{iArray},'_',' ') ' Array yield across time (SNR>1.5)'],'FontSize',18);
-    
     set(gcf,'position',[161,223,1369,538]);
     
     if startsWith(matlab.desktop.editor.getActiveFilename,'C:\Users\calebsponheim\Documents\')
@@ -41,8 +38,6 @@ for iArray = 1:length(array_names)
     else
         saveas(gcf,[array_names{iArray} '_summary.png']);
     end
-    % saveas(gcf,[params.dataDirServer 'Leda Pentousi\plots\summary plots\' params.monkeyIN ' ' params.arrayIN ' signal quality.png']);
-    %     export_fig([params.dataDirServer 'Leda Pentousi\plots\summary plots\' params.monkeyIN ' ' params.arrayIN ' signal quality_units_0-100.png']);
     close(gcf);
     clear good_channels_temp
     clear relative_days_temp

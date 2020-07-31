@@ -46,7 +46,7 @@ parfor iFile = 1:nFiles
     nChannelsWithSpikes = 0;
     
     try
-        data = openNEV(nev2read,'read','nosave','nomat');
+        data = openNEV(nev2read,'read','nosave','nomat'); % Use NPMK to load .nev data struct
         
         electrode = double(data.Data.Spikes.Electrode);
         waveforms = double(data.Data.Spikes.Waveform);
