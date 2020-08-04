@@ -4,11 +4,11 @@ function figure_four(array_data)
 % decreases, communicating kind of a set of "expectations" you might have
 % about your given array's performance over time.
 
-% three different channel yield thresholds. 
+% three different channel yield thresholds.
 
 %% Calculating everything
 
-time_points_in_days = ((365/12)*3):((365/12)*3):(365*3);
+time_points_in_days = [0,((365/12)*1),((365/12)*3):((365/12)*3):(365*3)];
 one_month = 365/12;
 array_names = unique({array_data.array_name});
 yield_threshold(:,1) = round([array_data.total_num_of_channels]*.1);
@@ -21,33 +21,48 @@ all_good_channels_temp = [array_data.num_good_channels_corrected];
 
 for iThresh = 1:size(yield_threshold,2)
     num_arrays_above_threshold = zeros(numel(time_points_in_days),1);
+    num_arrays_in_window = zeros(numel(time_points_in_days),1);
     for iArray = 1:length(array_names)
         
         array_files_index = cellfun(@(x) strcmp(x,array_names{iArray}),all_array_names_temp);
         array_relative_days = all_days_temp(array_files_index);
-        array_yield_thresh = yield_threshold(array_files_index,iThresh);
+        array_yield_thresh = yield_threshold(array_files_index,iThresh)';
         array_num_good_channels = all_good_channels_temp(array_files_index);
         
         for iTimePoint = 1:length(time_points_in_days)
             file_above_thresh = 0;
+            count_array_in_proportion = 0;
             for iFile = 1:length(array_relative_days)
                 % we take a window of time around each three month point in
                 % order to capture enough data points to make an average.
                 % We have no guarantee that enough data was recorded at
                 % exact three-month intervals, so we have to average across
                 % a rough time window.
-                if (((time_points_in_days(iTimePoint)- one_month) < array_relative_days(iFile)) && ...
-                        (array_relative_days(iFile) < (time_points_in_days(iTimePoint)+ one_month))) && ...
-                        (array_num_good_channels(iFile) > array_yield_thresh(iFile))
-                    file_above_thresh = 1;
+                
+                if max(array_relative_days) > (time_points_in_days(iTimePoint)- one_month)
+                    if (((time_points_in_days(iTimePoint)- one_month) < array_relative_days(iFile)) && ...
+                            (array_relative_days(iFile) < (time_points_in_days(iTimePoint)+ one_month))) && ...
+                            (array_num_good_channels(iFile) > array_yield_thresh(iFile))
+                        file_above_thresh = 1;
+                        count_array_in_proportion = 1;
+                    elseif (((time_points_in_days(iTimePoint)- one_month) < array_relative_days(iFile)) && ...
+                            (array_relative_days(iFile) < (time_points_in_days(iTimePoint)+ one_month)))
+                        count_array_in_proportion = 1;
+                    end
+                elseif  max(array_relative_days) < (time_points_in_days(iTimePoint)- one_month)
+                    count_array_in_proportion = 1;
                 end
             end
             num_arrays_above_threshold(iTimePoint) = num_arrays_above_threshold(iTimePoint) + file_above_thresh;
+            num_arrays_in_window(iTimePoint) = num_arrays_in_window(iTimePoint) + count_array_in_proportion;
         end
     end
     
-    percent_arrays_above_threshold(:,iThresh) = num_arrays_above_threshold / length(array_names);
+    for iTimePoint = 1:length(time_points_in_days)
+        percent_arrays_above_threshold(iTimePoint,iThresh) = num_arrays_above_threshold(iTimePoint) / num_arrays_in_window(iTimePoint);
+    end
     clear num_arrays_above_threshold
+    clear num_arrays_in_window
 end
 
 %% plotting everything
