@@ -80,7 +80,7 @@ patch_color = hsv2rgb(HSV_color);
 % patch() is a great way to create error bars.
 patch([1:length(avg_channels) fliplr(1:length(avg_channels))],[avg_channels+std_err_channels fliplr(avg_channels-std_err_channels)],patch_color,'edgecolor','none')
 plot(avg_channels,'linewidth',2,'Color',colors(1,:));
-xlim([0 1500])
+xlim([0 1137])
 
 
 box off
@@ -106,7 +106,7 @@ clear subject_lines
 clear averaging_count
 %% Figure 2b. Mean (se) SNR over all arrays versus DPI.
 
-% I used the same approach as the channel yielf for SNR - calculate linear
+% I used the same approach as the channel yield for SNR - calculate linear
 % regressions for each array's data, then average all of the fits together.
 % idk maybe it's okay, maybe it's not. 
 
@@ -162,7 +162,7 @@ patch_color = hsv2rgb(HSV_color);
 
 patch([1:length(avg_SNR) fliplr(1:length(avg_SNR))],[avg_SNR-std_err_SNR fliplr(avg_SNR+std_err_SNR)],patch_color,'edgecolor','none')
 plot(avg_SNR,'linewidth',2,'Color',colors(2,:));
-xlim([0 1500])
+xlim([0 1137])
 
 box off
 grid on
