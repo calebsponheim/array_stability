@@ -58,8 +58,7 @@ legend([plots{:}],plot_names,'location','northeastoutside')
 
 grid on
 xlabel('Days Post Implantation');
-title('Long-Lasting Array Channel Yield Over Time');
-
+title('A','units','normalized', 'Position', [-0.1,1.05,1]);
 clear plot_names
 clear plots
 %% Figure 1b. Example spike waveforms at specific time points from
@@ -74,6 +73,7 @@ clear plots
 subplot(2,3,4); hold on;
 
 t = text(0.1,.5,{'waveform', 'examples','go here'});
+title('B','units','normalized', 'Position', [-0.1,1.05,1]);
 t.FontSize = 24;
 
 
@@ -120,8 +120,7 @@ xlim([0 max([array_data.relative_days])]);
 box off
 
 legend([plots{:}],plot_names,'location','northeastoutside')
-title('Long-Lasting Array SNR Over Time');
-
+title('C','units','normalized', 'Position', [-0.1,1.05,1]);
 grid on
 xlabel('Days Post Implantation');
 

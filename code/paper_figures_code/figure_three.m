@@ -63,8 +63,6 @@ hold off
 hold(ax1, 'on');
 xlabel('days post implant (days)');
 ylabel('Implant Order (By Lifetime Length)');
-title('Summary heat map: array order/DPI/num channels(size)/SNR(color)');
-xlim([0 max([array_data.relative_days])])
 xticks(0:250:3250)
 ylim([0 max(implant_order)+1])
 colormap(jet);

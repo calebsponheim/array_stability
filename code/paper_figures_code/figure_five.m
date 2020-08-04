@@ -26,7 +26,7 @@ xlabel('Portion of Total Channels')
 ylabel('Number of Arrays')
 xticks(0:.1:1)
 xlim([0 1.1])
-title('Distribution of max proportion of electrodes with units over arrays')
+title('A','units','normalized', 'Position', [-0.1,1.05,1]);
 box off
 
 clear array_max_good_channels
@@ -47,7 +47,7 @@ xlabel('Portion of Total Channels')
 ylabel('Number of Arrays')
 xticks(0:.1:1)
 xlim([0 1.1])
-title('Distribution of max proportion of electrodes over M1 arrays')
+title('B','units','normalized', 'Position', [-0.1,1.05,1]);
 box off
 
 clear array_max_good_channels
@@ -69,7 +69,7 @@ xlabel('Portion of Total Channels')
 ylabel('Number of Arrays')
 xticks(0:.1:1)
 xlim([0 1.1])
-title('Distribution of max proportion of electrodes over Premotor arrays')
+title('C','units','normalized', 'Position', [-0.1,1.05,1]);
 box off
 
 clear array_max_good_channels

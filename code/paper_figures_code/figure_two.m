@@ -87,7 +87,7 @@ box off
 grid on
 xlabel('Days Post Implantation');
 ylabel('Channel Yield (proportion of total number)');
-title('Average Array Yield Over Time');
+title('A','units','normalized', 'Position', [-0.1,1.05,1]);
 
 
 %inset plot
@@ -96,6 +96,7 @@ subplot(2,4,4); hold on;
 patch([1:length(avg_channels) fliplr(1:length(avg_channels))],[avg_channels+std_err_channels fliplr(avg_channels-std_err_channels)],patch_color,'edgecolor','none')
 plot(avg_channels,'linewidth',2,'Color',colors(1,:));
 xlim([0 30])
+title('B','units','normalized', 'Position', [-0.1,1.05,1]);
 
 box off
 xlabel('days post implantation');
@@ -168,7 +169,7 @@ box off
 grid on
 xlabel('days post implantation');
 ylabel('SNR');
-title('mean SNR over time');
+title('C','units','normalized', 'Position', [-0.1,1.05,1]);
 
 
 %inset plot
@@ -177,6 +178,7 @@ subplot(2,4,8); hold on;
 patch([1:length(avg_SNR) fliplr(1:length(avg_SNR))],[avg_SNR-std_err_SNR fliplr(avg_SNR+std_err_SNR)],patch_color,'edgecolor','none')
 plot(avg_SNR,'linewidth',2,'Color',colors(2,:));
 xlim([0 30])
+title('D','units','normalized', 'Position', [-0.1,1.05,1]);
 
 box off
 xlabel('days post implantation');

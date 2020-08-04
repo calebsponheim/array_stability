@@ -80,8 +80,6 @@ xlabel('Months Post Implantation')
 xticks(time_points_in_days/one_month);
 legend([plots{:}],areas) %legend only for the lines, not the patches
 ylabel('Signal to Noise Ratio')
-title('Average SNR Over Time, For Different Brain Areas')
-set(gcf,'pos',[1150,400,700,500])
 box off
 
 %% Saving

@@ -78,7 +78,6 @@ xlabel('Months Post Implantation')
 legend()
 xticks(time_points_in_days/one_month);
 ylabel('Portion of Arrays with Certain Yields')
-title('Proportion of arrays with certain yield over different time points')
 set(gcf,'pos',[1150,400,700,500])
 box off
 
