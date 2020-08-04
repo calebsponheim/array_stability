@@ -70,13 +70,13 @@ patch_color = hsv2rgb(HSV_color);
 % draw the patch first so it doesn't cover the line. patch() is very useful
 patch([time_points_in_days/one_month fliplr(time_points_in_days/one_month)],[(mean_array_SNR{iArea}+std_err_SNR{iArea})'...
     fliplr((mean_array_SNR{iArea}-std_err_SNR{iArea})')],patch_color,'edgecolor','none')
-alpha(0.5)
+alpha(0.4)
 
 end
 for iArea = 1:numel(areas)
 plots{iArea} = plot(time_points_in_days/one_month,mean_array_SNR{iArea},'o-','linewidth',2,'color',colors(iArea,:));
 end
-xlabel('Months Post Implantation (DPI)')
+xlabel('Months Post Implantation')
 xticks(time_points_in_days/one_month);
 legend([plots{:}],areas) %legend only for the lines, not the patches
 ylabel('Signal to Noise Ratio')
