@@ -34,13 +34,13 @@ for iArray = 1:length(array_names)
         plot(relative_days_temp,good_channels_temp,'.','linewidth',1,'color',colors(iArray,:));
         quad_fit_to_good_channels = polyfit(relative_days_temp,good_channels_temp,1);
         quad_fit_to_good_channels = ...
-            polyval(quad_fit_to_good_channels,min(relative_days_temp):.1:max(relative_days_temp));
+            polyval(quad_fit_to_good_channels,min(relative_days_temp):1:max(relative_days_temp));
         
         if max(quad_fit_to_good_channels)>128
             disp('stop, who are you even')
         else
             plots{iPlotName} = ...
-                plot(min(relative_days_temp):.1:max(relative_days_temp),...
+                plot(min(relative_days_temp):1:max(relative_days_temp),...
                 quad_fit_to_good_channels,'-','color',colors(iArray,:),'linewidth',2);
         end
         iPlotName = iPlotName + 1;
@@ -86,7 +86,7 @@ for iArray = 1:length(array_names)
     file_count = 1;
     for iFile = 1:size(array_data,2)
         if strcmp(array_data(iFile).array_name,array_names{iArray})
-            if ~ischar(array_data(iFile).SNR_all_channels)
+            if ~ischar(array_data(iFile).SNR_all_channels) && ~isnan(array_data(iFile).SNR_all_channels) 
                 SNR_temp(file_count) = array_data(iFile).SNR_all_channels;
                 relative_days_temp(file_count) = array_data(iFile).relative_days;
                 file_count = file_count + 1;
@@ -100,12 +100,12 @@ for iArray = 1:length(array_names)
         
         % Linear Regression to each array's data points.
         quad_fit_to_SNR = polyfit(relative_days_temp,SNR_temp,1);
-        quad_fit_to_SNR = polyval(quad_fit_to_SNR,min(relative_days_temp):.1:max(relative_days_temp));
+        quad_fit_to_SNR = polyval(quad_fit_to_SNR,min(relative_days_temp):1:max(relative_days_temp));
         
         if max(quad_fit_to_SNR)>128
         else
             plots{iPlotName} = ...
-                plot(min(relative_days_temp):.1:max(relative_days_temp),...
+                plot(min(relative_days_temp):1:max(relative_days_temp),...
                 quad_fit_to_SNR,'-','color',colors(iArray,:),'linewidth',2);
         end
         iPlotName = iPlotName + 1;
