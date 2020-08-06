@@ -1,34 +1,18 @@
-function table_one(array_data)
+function table_one()
+% Script Description
 
+%% Load
+subject_array_info = readtable('.\data\subject_info_data.csv');
+subject_array_info_cropped = subject_array_info(:,[2,4:end]);
+%% Writing to pre-formatted excel doc
 
-% get all array names
+subject_array_info_cropped.Properties.VariableNames = ...
+    {'Array Name' 'Brain Area' 'Implant Date' 'Electrode Length' 'Array Size' 'Metallization' 'Number of Recordings'};
+formatted_table_filename = '.\figures\paper_figures\table_one.xlsx';
 
-% for each array in the list of array names
-%    add a field in this new table for the array name
+writetable(subject_array_info_cropped,formatted_table_filename,'Sheet',1,'Range','A1')
 
-%    add a field to its left for the array's owner (gotta do some text
-%    parsing here, probably, but it'll be easy because you name your sheets
-%    consistently)
+% formatted_table_filename_onedrive = 'C:\Users\calebsponheim\OneDrive - The University of Chicago\table_one.xlsx';
+% writetable(subject_array_info_cropped,formatted_table_filename_onedrive,'Sheet',1,'Range','A1')
 
-%    get a count of all the times that array name shows up using logical indexing
-%    
-%    then, figure out how to get the other array characteristics and info
-%    into this format. you only have to do it a couple times! Another
-%    import script? Ughh
-%    
-%%
-
-% At some point, save the table you've made as a .mat file
-
-
-%% 
-% IMPORTANT: create a uifigure first using uifigure(), or else none of this
-% will work
-
-% use uitable to great a table gui object, to then save as a png to add to
-% the manuscript
-
-% use addStyle and uistyle to create and add formatting flourishes to make
-% it paper-ready, but automated.
-   
 end

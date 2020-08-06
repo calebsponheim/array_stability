@@ -14,6 +14,8 @@ sheets_to_read = xl_xlsfinfo(xls2read);
 file_count = 0;
 array_data = [];
 
+subject_array_info = readtable('.\data\subject_info_data.csv');
+
 % only two nested for-loops! lol
 for iSheet = 1:length(sheets_to_read)
     if contains(sheets_to_read(iSheet),'_') % this is a very brittle way to ignore the bad sheets in the excel workbook.
@@ -38,6 +40,7 @@ for iSheet = 1:length(sheets_to_read)
                 else
                     
                     array_data(iFile+file_count).array_name = sheets_to_read{iSheet};
+                    array_data(iFile+file_count).array_name_abbrev = subject_array_info.Abbrev(contains(subject_array_info.Array_Name,array_data(iFile+file_count).array_name));
                     array_data(iFile+file_count).implantation_date = sheet_implantation_date;
                     array_data(iFile+file_count).folder = cropped_sheet_temp{iFile,1};
                     array_data(iFile+file_count).filename = cropped_sheet_temp{iFile,2};
@@ -57,6 +60,8 @@ for iSheet = 1:length(sheets_to_read)
                         array_data(iFile+file_count).SNR_good_channels = cropped_sheet_temp{iFile,7};
                     end
                     array_data(iFile+file_count).brain_area = cropped_sheet_temp{iFile,8};
+                    array_data(iFile+file_count).electrode_length = subject_array_info.Electrode_Length(contains(subject_array_info.Array_Name,array_data(iFile+file_count).array_name));
+                    array_data(iFile+file_count).metallization = subject_array_info.Metallization(contains(subject_array_info.Array_Name,array_data(iFile+file_count).array_name));
                     
                     
                     % THIS code (currently commented out) is meant to get
@@ -87,7 +92,17 @@ for iSheet = 1:length(sheets_to_read)
                 end
             end
         end
+        % Adding "number of recordings"  and "size" back into table
+        
+        subject_array_info.Number_of_Recordings(contains(subject_array_info.Array_Name,array_data(iFile+file_count).array_name))...
+            = sum(contains({array_data.array_name},array_data(iFile+file_count).array_name));
+        subject_array_info.Size(contains(subject_array_info.Array_Name,array_data(iFile+file_count).array_name)) ...
+            = mode([array_data((contains({array_data.array_name},array_data(iFile+file_count).array_name))).total_num_of_channels]);
+
+        %
+        
         file_count = size(array_data,2);
+        
     else
     end
     
@@ -98,3 +113,4 @@ end
 
 save([dataDirServer '\Leda Pentousi\array_data'],'array_data')
 save('.\data\array_data','array_data')
+writetable(subject_array_info,'.\data\subject_info_data.csv','Delimiter',',')
