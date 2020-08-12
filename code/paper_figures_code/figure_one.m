@@ -49,8 +49,10 @@ for iArray = 1:length(array_names)
     clear good_channels_temp
     clear relative_days_temp
 end
-ylabel('proportion good channels');
+ylabel('Percent Good Channels');
 ylim([0 1]);
+yticks(0:.25:1)
+yticklabels({'0%' '25%' '50%' '75%' '100%'})
 xlim([0 max([array_data.relative_days])]);
 box off
 
