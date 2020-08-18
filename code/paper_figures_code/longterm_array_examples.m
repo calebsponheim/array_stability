@@ -1,4 +1,4 @@
-function figure_one(array_data)
+function longterm_array_examples(array_data)
 % Figure 1a. Examples from 3 arrays lasting over 2 years including Mack’s
 % lasting 9 years as a function of days post implantation (DPI)
 % with an SNR threshold of 1.5 (or 2) (3 line graphs).
@@ -129,9 +129,9 @@ xlabel('Days Post Implantation');
 %% Save
 
 if startsWith(matlab.desktop.editor.getActiveFilename,'C:\Users\calebsponheim\Documents\')
-    saveas(gcf,'C:\Users\calebsponheim\Documents\git\array_stability\figures\paper_figures\figure_one.png');
+    saveas(gcf,'C:\Users\calebsponheim\Documents\git\array_stability\figures\paper_figures\longterm_array_examples.png');
 else
-    saveas(gcf,'figure_one.png');
+    saveas(gcf,'longterm_array_examples.png');
 end
 
 close(gcf);

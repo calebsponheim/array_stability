@@ -1,4 +1,4 @@
-function figure_two(array_data)
+function yield_and_SNR_over_time(array_data)
 % This Figure plots the Signal-to-noise ratio and Channel Yield (in
 % percentage) for the array stability project. Includes a subplot
 % highlighting the first 30 days after implant.
@@ -192,9 +192,9 @@ clear subject_lines
 % if you're on my computer, then it saves in the right spot. if not, then
 % it just dumps the figure file in your local directory. whoops!
 if startsWith(matlab.desktop.editor.getActiveFilename,'C:\Users\calebsponheim\Documents\')
-    saveas(gcf,'C:\Users\calebsponheim\Documents\git\array_stability\figures\paper_figures\figure_two.png');
+    saveas(gcf,'C:\Users\calebsponheim\Documents\git\array_stability\figures\paper_figures\yield_and_SNR_over_time.png');
 else
-    saveas(gcf,'figure_two.png');
+    saveas(gcf,'yield_and_SNR_over_time.png');
 end
 
 close(gcf);

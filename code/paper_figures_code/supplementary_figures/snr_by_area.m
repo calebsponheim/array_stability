@@ -1,4 +1,4 @@
-function figure_six(array_data)
+function snr_by_area(array_data)
 %% Figure 6: Mean SNR at 3 month intervals.
 
 % We broke out the results by brain area over time to see if there were
@@ -85,9 +85,9 @@ box off
 %% Saving
 
 if startsWith(matlab.desktop.editor.getActiveFilename,'C:\Users\calebsponheim\Documents\')
-    saveas(gcf,'C:\Users\calebsponheim\Documents\git\array_stability\figures\paper_figures\figure_six.png');
+    saveas(gcf,'C:\Users\calebsponheim\Documents\git\array_stability\figures\paper_figures\supplementary_figures\snr_by_area.png');
 else
-    saveas(gcf,'figure_six.png');
+    saveas(gcf,'snr_by_area.png');
 end
 
 close(gcf);

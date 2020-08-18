@@ -1,4 +1,4 @@
-function figure_five(array_data)
+function area_histograms(array_data)
 %% Figure 5a: Distribution of max # of electrodes with units over arrays.
 % This figure is meant to show the maximum potential yield for arrays.
 % What's the best performance you get on average from your arrays?
@@ -76,9 +76,9 @@ clear array_max_good_channels
 %% Saving
 
 if startsWith(matlab.desktop.editor.getActiveFilename,'C:\Users\calebsponheim\Documents\')
-    saveas(gcf,'C:\Users\calebsponheim\Documents\git\array_stability\figures\paper_figures\figure_five.png');
+    saveas(gcf,'C:\Users\calebsponheim\Documents\git\array_stability\figures\paper_figures\supplementary_figures\area_histograms.png');
 else
-    saveas(gcf,'figure_five.png');
+    saveas(gcf,'area_histograms.png');
 end
 
 close(gcf);

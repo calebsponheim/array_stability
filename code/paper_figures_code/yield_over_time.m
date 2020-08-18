@@ -1,4 +1,4 @@
-function figure_four(array_data)
+function yield_over_time(array_data)
 % Figure 4. percent of arrays with yield >20% over different time points:
 % The goal of this graph is to see how the yield more systematically
 % decreases, communicating kind of a set of "expectations" you might have
@@ -85,9 +85,9 @@ clear num_arrays_above_threshold
 %% Saving
 
 if startsWith(matlab.desktop.editor.getActiveFilename,'C:\Users\calebsponheim\Documents\')
-    saveas(gcf,'C:\Users\calebsponheim\Documents\git\array_stability\figures\paper_figures\figure_four.png');
+    saveas(gcf,'C:\Users\calebsponheim\Documents\git\array_stability\figures\paper_figures\yield_over_time.png');
 else
-    saveas(gcf,'figure_four.png');
+    saveas(gcf,'yield_over_time.png');
 end
 
 close(gcf);
