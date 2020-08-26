@@ -18,7 +18,7 @@ pedestals = ["A", "P", "A", "P"];
 for iArray = 1:length(subject)
     
     
-    subject = subjects(iArray); %'P1'; % replace with your subject name (ex: 'Jan' or 'P1')
+    subject = subjects(iArray); %'P1'; % replace with your subject name (ex: 'P1')
     pedestal = pedestals(iArray); %'A'; % A (anterior) or P (posterior)
     filenames = sprintf('input_list_%s_%s.csv', subject, pedestal);
     
@@ -147,8 +147,8 @@ for iArray = 1:length(subject)
                 
                 %% Write to output cell array
                 
-                if strcmp(subject,'Jan') || strcmp(subject,'P1')
-                    % Jan (P1) had two standard 96-channel arrays.
+                if strcmp(subject,'P1')
+                    % (P1) had two standard 96-channel arrays.
                     % So each array used banks A-C and not bank D.
                     % The .NEV files are separate for each array (one array per NSP and instance of Central).
                     
@@ -161,24 +161,24 @@ for iArray = 1:length(subject)
                         [iFolder iName nevdateNum sum(allsnr(1:96)>SNR_threshold) ...
                         nanmean(allsnr(1:96)) nanmean(allsnr(allsnr(1:96)>SNR_threshold))];
                     
-                elseif strcmp(subject,'Nathan') || strcmp(subject,'P2')
+                elseif strcmp(subject,'P2')
                     
-                    % Nathan (P2)’s arrays contain 1 motor array and 1 sensory array on each pedestal.
+                    % (P2)’s arrays contain 1 motor array and 1 sensory array on each pedestal.
                     % The sensory arrays are bank C (32-wired channels),
                     % and the motor arrays are on banks A, B, and D (88-wired channels).
                     % Not all 128 channels are used, 8 channels in bank D are unused (these are the last 8 even channels, 114:2:128).
                     % Like P1, each .NEV file is associated with one pedestal.
                     % So 1 motor array and 1 sensory array per .NEV file.
                     
-                    nathan_range = [1:64 97:112 113:2:127];
-                    denominator = numel(nathan_range);
+                    P2_range = [1:64 97:112 113:2:127];
+                    denominator = numel(P2_range);
                     
                     disp([nev2read ' worked! writing to table.'])
                     signal_quality{iFile,:} = ...
                         [{iFolder} {iName} nevdateNum ...
-                        sum(allsnr(nathan_range)>SNR_threshold) ...
-                        (nansum(allsnr(nathan_range))/denominator) ...
-                        (nansum(allsnr(allsnr(nathan_range)>SNR_threshold))/denominator)];
+                        sum(allsnr(P2_range)>SNR_threshold) ...
+                        (nansum(allsnr(P2_range))/denominator) ...
+                        (nansum(allsnr(allsnr(P2_range)>SNR_threshold))/denominator)];
                     
                 else
                     disp([nev2read ' worked! writing to table.'])

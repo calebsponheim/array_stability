@@ -62,7 +62,7 @@ for iSheet = 1:length(sheets_to_read)
                     array_data(iFile+file_count).brain_area = cropped_sheet_temp{iFile,8};
                     array_data(iFile+file_count).electrode_length = subject_array_info.Electrode_Length(contains(subject_array_info.Array_Name,array_data(iFile+file_count).array_name));
                     array_data(iFile+file_count).metallization = subject_array_info.Metallization(contains(subject_array_info.Array_Name,array_data(iFile+file_count).array_name));
-                    
+                    array_data(iFile+file_count).species = 'NHP';
                     
                     % THIS code (currently commented out) is meant to get
                     % the ACTUAL number of electrodes from each .nev file
@@ -108,6 +108,52 @@ for iSheet = 1:length(sheets_to_read)
     
     disp(['completed ' sheets_to_read{iSheet}])
 end
+%% Adding Human Data
+
+% generate file list 
+filelist = dir('./data/human_data/');
+folder = filelist(1).folder;
+filelist = {filelist.name};
+filelist = cellfun(@(x)[folder '\' x],filelist(...
+    startsWith(filelist,'P')),'UniformOutput',false);
+
+for iArray = 1:numel(filelist)% for each file
+    % get array name from filename
+    array_name_temp = strrep(strrep(filelist{iArray},'_processed.csv',''),[folder '\'],'');
+    iArray_data_temp = readtable(filelist{iArray});
+    
+    for iFile = 1:size(iArray_data_temp,1)% for each row
+        % get all the variables
+        array_data(iFile+file_count).species = 'HP';
+        array_data(iFile+file_count).array_name = array_name_temp;
+        array_data(iFile+file_count).array_name_abbrev = array_name_temp;
+        array_data(iFile+file_count).implantation_date = dateNum2days(subject_array_info.Implant_Date(contains(subject_array_info.Array_Name,array_name_temp)));
+        array_data(iFile+file_count).folder = iArray_data_temp.FilePath(iFile);
+        array_data(iFile+file_count).filename = iArray_data_temp.FileName(iFile);
+        
+        % Re-pull NEVdate
+        nevdate_temp = str2double(array_data(iFile+file_count).filename{1}(1:8));
+        
+        %
+        array_data(iFile+file_count).relative_days = dateNum2days(nevdate_temp) - array_data(iFile+file_count).implantation_date;
+        array_data(iFile+file_count).absolute_days = dateNum2days(nevdate_temp);
+        array_data(iFile+file_count).num_good_channels = iArray_data_temp.NumGoodChannels(iFile);
+        array_data(iFile+file_count).num_good_channels_corrected = iArray_data_temp.NumGoodChannels(iFile);
+        array_data(iFile+file_count).SNR_all_channels = iArray_data_temp.SNRallchannels(iFile);
+        array_data(iFile+file_count).SNR_good_channels = iArray_data_temp.SNRgoodchannels(iFile);
+        array_data(iFile+file_count).brain_area = subject_array_info.Brain_Area(contains(subject_array_info.Array_Name,array_name_temp));
+        array_data(iFile+file_count).electrode_length = subject_array_info.Electrode_Length(contains(subject_array_info.Array_Name,array_name_temp));
+        array_data(iFile+file_count).metallization = subject_array_info.Metallization(contains(subject_array_info.Array_Name,array_name_temp));
+        array_data(iFile+file_count).total_num_of_channels = subject_array_info.Size(contains(subject_array_info.Array_Name,array_name_temp));
+    end %iFile
+    
+    % Export num of recordings to subject sheet
+    subject_array_info.Number_of_Recordings(contains(subject_array_info.Array_Name,array_data(iFile+file_count).array_name))...
+        = sum(contains({array_data.array_name},array_data(iFile+file_count).array_name));
+
+    file_count = size(array_data,2);
+        
+end %iArray
 
 %% Save
 
