@@ -10,6 +10,7 @@ function longterm_array_examples(array_data)
 figure('name','Long-term, chronic array recordings','visible','off','color','w');
 box off
 array_names = unique({array_data.array_name});
+array_names_for_legend = unique({array_data.array_name});
 colors = jet(length(array_names));
 set(gcf,'pos',[350,200,1000,750])
 
@@ -30,7 +31,7 @@ for iArray = 1:length(array_names)
     end
     
     if max(relative_days_temp) > (365*2)
-        plot_names{iPlotName} = strrep(array_names{iArray},'_',' ');
+        plot_names{iPlotName} = strrep(array_names_for_legend{iArray},'_',' ');
         plot(relative_days_temp,good_channels_temp,'.','linewidth',1,'color',colors(iArray,:));
         quad_fit_to_good_channels = polyfit(relative_days_temp,good_channels_temp,1);
         quad_fit_to_good_channels = ...

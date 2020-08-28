@@ -40,7 +40,13 @@ for iSheet = 1:length(sheets_to_read)
                 else
                     
                     array_data(iFile+file_count).array_name = sheets_to_read{iSheet};
-                    array_data(iFile+file_count).array_name_abbrev = subject_array_info.Abbrev(contains(subject_array_info.Array_Name,array_data(iFile+file_count).array_name));
+                    if strcmp(array_data(iFile+file_count).array_name,'Mack_M1l')
+                        array_data(iFile+file_count).array_name_abbrev = {'MkM1b'};
+                    elseif strcmp(array_data(iFile+file_count).array_name,'Oreo_M1')
+                        array_data(iFile+file_count).array_name_abbrev = {'OrM1a'};
+                    else
+                        array_data(iFile+file_count).array_name_abbrev = subject_array_info.Abbrev(contains(subject_array_info.Array_Name,array_data(iFile+file_count).array_name));
+                    end
                     array_data(iFile+file_count).implantation_date = sheet_implantation_date;
                     array_data(iFile+file_count).folder = cropped_sheet_temp{iFile,1};
                     array_data(iFile+file_count).filename = cropped_sheet_temp{iFile,2};
@@ -126,7 +132,7 @@ for iArray = 1:numel(filelist)% for each file
         % get all the variables
         array_data(iFile+file_count).species = 'HP';
         array_data(iFile+file_count).array_name = array_name_temp;
-        array_data(iFile+file_count).array_name_abbrev = array_name_temp;
+        array_data(iFile+file_count).array_name_abbrev = {array_name_temp};
         array_data(iFile+file_count).implantation_date = dateNum2days(subject_array_info.Implant_Date(contains(subject_array_info.Array_Name,array_name_temp)));
         array_data(iFile+file_count).folder = iArray_data_temp.FilePath(iFile);
         array_data(iFile+file_count).filename = iArray_data_temp.FileName(iFile);
