@@ -33,9 +33,9 @@ for iArray = 1:numel(array_names)
         for iWindow = 1:size(date_range,1)
             array_files_indices_temp_window = relative_days_array_temp >= date_range(iWindow,1) & relative_days_array_temp <= date_range(iWindow,2);
             if sum(array_files_indices_temp_window) > 0
-                [platinum_snr_distribution{iWindow}(plat_count,:),idx] = datasample(snr_array_temp(array_files_indices_temp_window),number_of_samples);
+                platinum_snr_distribution{iWindow}(plat_count) = mean(snr_array_temp(array_files_indices_temp_window));
 %                 platinum_relative_days{iWindow}(plat_count,:) = relative_days_array_temp(idx);
-                platinum_percent_distribution{iWindow}(plat_count,:) = num_good_channels_array_temp(idx) / array_tot_num_channels;
+                platinum_percent_distribution{iWindow}(plat_count) = mean(num_good_channels_array_temp) / array_tot_num_channels;
             end
         end
         plat_count = plat_count + 1;
@@ -43,9 +43,9 @@ for iArray = 1:numel(array_names)
         for iWindow = 1:size(date_range,1)
             array_files_indices_temp_window = relative_days_array_temp >= date_range(iWindow,1) & relative_days_array_temp <= date_range(iWindow,2);
             if sum(array_files_indices_temp_window) > 0
-                [irid_snr_distribution{iWindow}(irid_count,:),idx] = datasample(snr_array_temp(array_files_indices_temp_window),number_of_samples);
+                irid_snr_distribution{iWindow}(irid_count) = mean(snr_array_temp(array_files_indices_temp_window));
 %                 irid_relative_days{iWindow}(irid_count,:) = relative_days_array_temp(idx);
-                irid_percent_distribution{iWindow}(irid_count,:) = num_good_channels_array_temp(idx) / array_tot_num_channels;
+                irid_percent_distribution{iWindow}(irid_count) = mean(num_good_channels_array_temp) / array_tot_num_channels;
             end
         end
         irid_count = irid_count + 1;
