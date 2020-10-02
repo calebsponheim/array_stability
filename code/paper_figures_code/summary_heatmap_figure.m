@@ -18,7 +18,7 @@ for iArray = 1:numel(array_names)
     lifetime_order(iArray,1) = iArray;
     
     for iFile = 1:size(array_data,2)
-        if strcmp(array_data(iFile).array_name,array_names{iArray})
+        if strcmp(array_data(iFile).array_name,array_names{iArray}) %&& strcmp(array_data(iFile).species,'NHP')
             relative_days_temp(file_count) = array_data(iFile).relative_days;
             file_count = file_count + 1;
         end

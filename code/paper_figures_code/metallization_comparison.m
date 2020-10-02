@@ -3,7 +3,7 @@ function metallization_comparison(array_data)
 % between different groups of arrays with different qualities: Things like
 % metallization, electrode length, etc.
 %% Sampling distributions with replacement
-number_of_samples = 30;
+% number_of_samples = 30;
 date_range(:,1) = [0,365/2,365,365+(365/2),365*2];
 date_range(:,2) = [365/2,365,365+(365/2),365*2,365*2+(365/2)];
 one_month = 365/12;
@@ -122,7 +122,7 @@ plot(date_range_for_plotting(find(metal_test_percent)), metal_test_percent(find(
 
 legend({'Platinum','Iridium Oxide'},'Location','SouthEast')
 xlabel('Months Post Implantation')
-xticks([0 6 12 18 24])
+xticks(date_range_for_plotting)
 ylabel('Percent Good Channels');
 ylim([0 1]);
 
@@ -148,7 +148,7 @@ plot(date_range_for_plotting(find(metal_test_snr)), metal_test_snr(find(metal_te
 
 legend({'Platinum','Iridium Oxide'},'Location','SouthEast')
 xlabel('Months Post Implantation')
-xticks([0 6 12 18 24])
+xticks(date_range_for_plotting)
 ylim([0 3.25])
 ylabel('Signal to Noise Ratio (SNR)');
 title('B','units','normalized', 'Position', [-0.1,1.05,1]);

@@ -72,7 +72,7 @@ Youke_S1o,YoS1a,Youkilis,S1o,110818,1,NaN,Iridium Oxide,NaN
 Youke_CMA,YoCMA,Youkilis,CMA,110818,1,NaN,Iridium Oxide,NaN
 Zizou_M1contra,ZiM1a,Zizou,M1contra,120730,1,96,Iridium Oxide,384
 Zizou_M1ipsi,ZiM1c,Zizou,M1ipsi,120730,1,96,Iridium Oxide,5
-P1_A,P1_A,P1,M1,120210,1.5,128,Platinum,350
-P1_P,P1_P,P1,M1,120210,1.5,128,Platinum,335
+P1_A,P1_A,P1,M1,120210,1.5,96,Platinum,350
+P1_P,P1_P,P1,M1,120210,1.5,96,Platinum,335
 P2_A,P2_A,P2,M1,150504,1.5,88,Platinum,722
 P2_P,P2_P,P2,M1,150504,1.5,88,Platinum,718
