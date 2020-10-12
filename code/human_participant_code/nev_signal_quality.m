@@ -15,15 +15,15 @@
 subjects = ["P1", "P1", "P2", "P2"];
 pedestals = ["A", "P", "A", "P"];
 
-for iArray = 1:length(subject)
+for iArray = 1:length(subjects)
     
     
     subject = subjects(iArray); %'P1'; % replace with your subject name (ex: 'P1')
     pedestal = pedestals(iArray); %'A'; % A (anterior) or P (posterior)
     filenames = sprintf('input_list_%s_%s.csv', subject, pedestal);
     
-    minimum_spike_trough = -68;
-    maximum_spike_trough = -1200;
+    minimum_spike_trough = -68; % -17 uV
+    maximum_spike_trough = -4000; % -1000 uV
     SNR_threshold = 1.5;
     
     %% add relevant code to path
