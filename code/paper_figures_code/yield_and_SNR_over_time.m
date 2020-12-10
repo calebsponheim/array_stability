@@ -4,7 +4,7 @@ function yield_and_SNR_over_time(array_data)
 % highlighting the first 30 days after implant.
 
 %% initializing figure
-figure('name','SNR and Channel Yield over time, all arrays','visible','off','color','w');
+figure('name','SNR and Channel Yield over time, all arrays','visible','on','color','w');
 box off
 array_names = unique({array_data.array_name});
 colors = autumn(4);
@@ -30,11 +30,11 @@ for iArray = 1:length(array_names)
         plot_names{iPlotName} = strrep(array_names{iArray},'_',' ');
         
         % linear regression of all points for each array separately
-        quad_fit_to_good_channels = polyfit(relative_days_temp,good_channels_temp,1);
+        quad_fit_to_good_channels = polyfit(relative_days_temp,good_channels_temp,3);
         quad_fit_to_good_channels = ...
             polyval(quad_fit_to_good_channels,min(relative_days_temp):max(relative_days_temp));
         
-        if max(quad_fit_to_good_channels)>128
+        if max(quad_fit_to_good_channels)>128 || min(quad_fit_to_good_channels) < 0.2
             disp('stop, who are you even')
         else
             subject_lines{iPlotName,1} = min(relative_days_temp):max(relative_days_temp);
@@ -91,7 +91,7 @@ box off
 grid on
 xlabel('Days Post Implantation');
 ylabel('Channel Yield (proportion of total number)');
-title('A','units','normalized', 'Position', [-0.1,1.05,1]);
+title('a','units','normalized', 'Position', [-0.1,1.05,1]);
 
 
 %inset plot
@@ -100,7 +100,7 @@ subplot(2,4,4); hold on;
 patch([1:length(avg_channels) fliplr(1:length(avg_channels))],[avg_channels+std_err_channels fliplr(avg_channels-std_err_channels)],patch_color,'edgecolor','none')
 plot(avg_channels,'linewidth',2,'Color',colors(1,:));
 xlim([0 30])
-title('B','units','normalized', 'Position', [-0.1,1.05,1]);
+title('b','units','normalized', 'Position', [-0.1,1.05,1]);
 
 box off
 xlabel('days post implantation');
@@ -132,7 +132,7 @@ for iArray = 1:length(array_names)
         end
         
         plot_names{iPlotName} = strrep(array_names{iArray},'_',' ');
-        quad_fit_to_SNR = polyfit(relative_days_temp,SNR_temp,1);
+        quad_fit_to_SNR = polyfit(relative_days_temp,SNR_temp,2);
         quad_fit_to_SNR = ...
             polyval(quad_fit_to_SNR,min(relative_days_temp):max(relative_days_temp));
         
@@ -177,7 +177,7 @@ box off
 grid on
 xlabel('days post implantation');
 ylabel('SNR');
-title('C','units','normalized', 'Position', [-0.1,1.05,1]);
+title('c','units','normalized', 'Position', [-0.1,1.05,1]);
 
 
 %inset plot
@@ -186,7 +186,7 @@ subplot(2,4,8); hold on;
 patch([1:length(avg_SNR) fliplr(1:length(avg_SNR))],[avg_SNR-std_err_SNR fliplr(avg_SNR+std_err_SNR)],patch_color,'edgecolor','none')
 plot(avg_SNR,'linewidth',2,'Color',colors(2,:));
 xlim([0 30])
-title('D','units','normalized', 'Position', [-0.1,1.05,1]);
+title('d','units','normalized', 'Position', [-0.1,1.05,1]);
 
 box off
 xlabel('days post implantation');

@@ -64,7 +64,7 @@ legend([plots{:}],plot_names,'location','northeastoutside')
 
 grid on
 xlabel('Days Post Implantation');
-title('A','units','normalized', 'Position', [-0.1,1.05,1]);
+title('a','units','normalized', 'Position', [-0.1,1.05,1]);
 clear plot_names
 clear plots
 %% Figure 1b. Example spike waveforms at specific time points from
@@ -79,7 +79,7 @@ clear plots
 subplot(2,3,4); hold on;
 
 t = text(0.1,.5,{'waveform', 'examples','go here'});
-title('B','units','normalized', 'Position', [-0.1,1.05,1]);
+title('b','units','normalized', 'Position', [-0.1,1.05,1]);
 t.FontSize = 24;
 
 

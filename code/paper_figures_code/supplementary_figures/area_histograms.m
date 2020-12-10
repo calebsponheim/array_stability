@@ -22,11 +22,11 @@ end
 
 subplot(1,3,1)
 bar(.05:.1:.95,histcounts(array_max_good_channels,0:.1:1))
-xlabel('Portion of Total Channels')
+xlabel('Proportion of Total Channels')
 ylabel('Number of Arrays')
 xticks(0:.1:1)
 xlim([0 1.1])
-title('A','units','normalized', 'Position', [-0.1,1.05,1]);
+title('a','units','normalized', 'Position', [-0.1,1.05,1]);
 box off
 
 clear array_max_good_channels
@@ -43,11 +43,11 @@ end
 
 subplot(1,3,2)
 bar(.05:.1:.95,histcounts(array_max_good_channels,0:.1:1))
-xlabel('Portion of Total Channels')
+xlabel('Proportion of Total Channels')
 ylabel('Number of Arrays')
 xticks(0:.1:1)
 xlim([0 1.1])
-title('B','units','normalized', 'Position', [-0.1,1.05,1]);
+title('b','units','normalized', 'Position', [-0.1,1.05,1]);
 box off
 
 clear array_max_good_channels
@@ -65,11 +65,11 @@ end
 
 subplot(1,3,3)
 bar(.05:.1:.95,histcounts(array_max_good_channels,0:.1:1))
-xlabel('Portion of Total Channels')
+xlabel('Proportion of Total Channels')
 ylabel('Number of Arrays')
 xticks(0:.1:1)
 xlim([0 1.1])
-title('C','units','normalized', 'Position', [-0.1,1.05,1]);
+title('c','units','normalized', 'Position', [-0.1,1.05,1]);
 box off
 
 clear array_max_good_channels

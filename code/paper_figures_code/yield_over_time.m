@@ -77,7 +77,7 @@ plot(time_points_in_days/one_month,percent_arrays_above_threshold(:,3)...
 xlabel('Months Post Implantation')
 legend()
 xticks(time_points_in_days/one_month);
-ylabel('Portion of Arrays with Certain Yields')
+ylabel('Proportion of Arrays with Certain Yields')
 set(gcf,'pos',[1150,400,700,500])
 box off
 

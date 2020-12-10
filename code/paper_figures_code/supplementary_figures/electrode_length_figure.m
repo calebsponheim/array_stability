@@ -130,7 +130,7 @@ ylabel('Percent Good Channels');
 ylim([0 1]);
 yticks(0:.25:1)
 yticklabels({'0%' '25%' '50%' '75%' '100%'})
-title('C','units','normalized', 'Position', [-0.1,1.05,1]);
+title('a','units','normalized', 'Position', [-0.1,1.05,1]);
 
 % subplot two: Length SNR
 subplot(1,2,2); hold on;
@@ -154,7 +154,7 @@ xlabel('Months Post Implantation')
 xticks(date_range_for_plotting)
 ylabel('Signal to Noise Ratio (SNR)');
 ylim([0 3.25])
-title('D','units','normalized', 'Position', [-0.1,1.05,1]);
+title('b','units','normalized', 'Position', [-0.1,1.05,1]);
 
 %% Saving
 if startsWith(matlab.desktop.editor.getActiveFilename,'C:\Users\calebsponheim\Documents\')
