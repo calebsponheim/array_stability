@@ -3,74 +3,52 @@ function yield_and_SNR_over_time(array_data)
 % percentage) for the array stability project. Includes a subplot
 % highlighting the first 30 days after implant.
 
-%% initializing figure
-figure('name','SNR and Channel Yield over time, all arrays','visible','on','color','w');
-box off
-array_names = unique({array_data.array_name});
-colors = autumn(4);
-set(gcf,'pos',[350,200,1000,750])
 
 %% Figure 2a. Mean (se) number of channels over all arrays versus DPI.
+array_names = unique({array_data.array_name});
 
 % histcounts and average
-iPlotName = 1;
+
+% define bin width in days
+bin_width = 30; %days
+
+% define bins, out to the maximum number of relative days in the dataset
+bins = 0:bin_width:max([array_data.relative_days]);
+averaging_prep = zeros(length(array_names),size(bins,2)-1);
 for iArray = 1:length(array_names)
-%     if contains(array_names{iArray},'P1') || contains(array_names{iArray},'P2')
-%     else
-        
         file_count = 1;
+        good_channels_temp = zeros(size(array_data,2),1);
+        relative_days_temp = zeros(size(array_data,2),1);
         for iFile = 1:size(array_data,2)
             if strcmp(array_data(iFile).array_name,array_names{iArray})
                 good_channels_temp(file_count) = array_data(iFile).num_good_channels_corrected / array_data(iFile).total_num_of_channels;
                 relative_days_temp(file_count) = array_data(iFile).relative_days;
                 file_count = file_count + 1;
             end
-        end
+        end %iFile
         
-        plot_names{iPlotName} = strrep(array_names{iArray},'_',' ');
-        
-        % linear regression of all points for each array separately
-        quad_fit_to_good_channels = polyfit(relative_days_temp,good_channels_temp,3);
-        quad_fit_to_good_channels = ...
-            polyval(quad_fit_to_good_channels,min(relative_days_temp):max(relative_days_temp));
-        
-        if max(quad_fit_to_good_channels)>128 || min(quad_fit_to_good_channels) < 0.2
-            disp('stop, who are you even')
-        else
-            subject_lines{iPlotName,1} = min(relative_days_temp):max(relative_days_temp);
-            subject_lines{iPlotName,2} = quad_fit_to_good_channels;
-        end
-        
-        averaging_prep(iArray,subject_lines{iPlotName,1}) = subject_lines{iPlotName,2};
-        
-        iPlotName = iPlotName + 1;
-        
+        for iBin = 1:(size(bins,2)-1)
+            averaging_prep(iArray,iBin) = nanmean(good_channels_temp((relative_days_temp > bins(iBin)) & (relative_days_temp <= bins(iBin+1))));      
+        end %iBin
+               
         clear good_channels_temp
         clear relative_days_temp
-%     end
-end
+end %iArray
 
-averaging_prep(averaging_prep == 0) = NaN;
-for iColumn = 1:size(averaging_prep,2)
-    averaging_count(iColumn) = sum(~isnan(averaging_prep(:,iColumn)));
-end
+avg_channels = zeros(size(bins,2)-1,1);
+std_channels = zeros(size(bins,2)-1,1);
+std_err_channels = zeros(size(bins,2)-1,1);
+for iBin = 1:(size(bins,2)-1)   
+    avg_channels(iBin) = sum(averaging_prep(:,iBin),'omitnan')/sum(averaging_prep(:,iBin) > 0);
+    std_channels(iBin) = std(averaging_prep(:,iBin),'omitnan');
+    std_err_channels(iBin) = std_channels(iBin) / sqrt(sum(averaging_prep(:,iBin) > 0));
+end %iBin
 
-% There is a challenge associated with averaging this kind of
-% non-continuous data over time; you can't simply take a mean because there
-% isn't data at every time point. not only that, but there are different
-% numbers of data points at each time point as well. The approach I used
-% here was to calculate a linear regression fit to all of the data points
-% available for each array, bounded by the first and last recording point,
-% giving me a bunch of lines. Then, I averaged across all the lines that
-% were available for each time point. this creates some weird edge effects,
-% and I'm sure I could do it better.
-
-avg_channels = nanmean(averaging_prep,1);
-avg_channels(isnan(avg_channels)) = 0;
-std_channels = nanstd(averaging_prep,1);
-std_channels(isnan(std_channels)) = 0;
-std_err_channels = std_channels ./ sqrt(averaging_count);
-std_err_channels(isnan(std_err_channels)) = 0;
+%% initializing figure
+figure('name','SNR and Channel Yield over time, all arrays','visible','off','color','w');
+box off
+colors = autumn(4);
+set(gcf,'pos',[350,200,1000,750])
 
 %main plot
 subplot(2,4,1:3); hold on;
@@ -82,9 +60,9 @@ HSV_color(2) = HSV_color(2) * .6;
 patch_color = hsv2rgb(HSV_color);
 
 % patch() is a great way to create error bars.
-patch([1:length(avg_channels) fliplr(1:length(avg_channels))],[avg_channels+std_err_channels fliplr(avg_channels-std_err_channels)],patch_color,'edgecolor','none')
-plot(avg_channels,'linewidth',2,'Color',colors(1,:));
-xlim([0 1137])
+patch([bins(~isnan(std_err_channels))+bin_width fliplr(bins(~isnan(std_err_channels))+bin_width)],[(avg_channels(~isnan(std_err_channels))+std_err_channels(~isnan(std_err_channels)))' fliplr((avg_channels(~isnan(std_err_channels))-std_err_channels(~isnan(std_err_channels)))')],patch_color,'edgecolor','none')
+plot(bins(2:end),avg_channels,'linewidth',2,'Color',colors(1,:));
+xlim([0 1500])
 
 
 box off
@@ -93,13 +71,49 @@ xlabel('Days Post Implantation');
 ylabel('Channel Yield (proportion of total number)');
 title('a','units','normalized', 'Position', [-0.1,1.05,1]);
 
+%% making inset with different bin size to show increase post-implant
+
+% define bin width in days
+bin_width = 4; %days
+
+% define bins, out to the maximum number of relative days in the dataset
+bins = 0:bin_width:max([array_data.relative_days]);
+averaging_prep = zeros(length(array_names),size(bins,2)-1);
+for iArray = 1:length(array_names)
+        file_count = 1;
+        good_channels_temp = zeros(size(array_data,2),1);
+        relative_days_temp = zeros(size(array_data,2),1);
+        for iFile = 1:size(array_data,2)
+            if strcmp(array_data(iFile).array_name,array_names{iArray})
+                good_channels_temp(file_count) = array_data(iFile).num_good_channels_corrected / array_data(iFile).total_num_of_channels;
+                relative_days_temp(file_count) = array_data(iFile).relative_days;
+                file_count = file_count + 1;
+            end
+        end %iFile
+        
+        for iBin = 1:(size(bins,2)-1)
+            averaging_prep(iArray,iBin) = nanmean(good_channels_temp((relative_days_temp > bins(iBin)) & (relative_days_temp <= bins(iBin+1))));      
+        end %iBin
+               
+        clear good_channels_temp
+        clear relative_days_temp
+end %iArray
+
+avg_channels = zeros(size(bins,2)-1,1);
+std_channels = zeros(size(bins,2)-1,1);
+std_err_channels = zeros(size(bins,2)-1,1);
+for iBin = 1:(size(bins,2)-1)   
+    avg_channels(iBin) = sum(averaging_prep(:,iBin),'omitnan')/sum(averaging_prep(:,iBin) > 0);
+    std_channels(iBin) = std(averaging_prep(:,iBin),'omitnan');
+    std_err_channels(iBin) = std_channels(iBin) / sqrt(sum(averaging_prep(:,iBin) > 0));
+end %iBin
 
 %inset plot
 subplot(2,4,4); hold on;
 
-patch([1:length(avg_channels) fliplr(1:length(avg_channels))],[avg_channels+std_err_channels fliplr(avg_channels-std_err_channels)],patch_color,'edgecolor','none')
-plot(avg_channels,'linewidth',2,'Color',colors(1,:));
-xlim([0 30])
+patch([bins(~isnan(std_err_channels))+bin_width fliplr(bins(~isnan(std_err_channels))+bin_width)],[(avg_channels(~isnan(std_err_channels))+std_err_channels(~isnan(std_err_channels)))' fliplr((avg_channels(~isnan(std_err_channels))-std_err_channels(~isnan(std_err_channels)))')],patch_color,'edgecolor','none')
+plot(bins(2:end),avg_channels,'linewidth',2,'Color',colors(1,:));
+xlim([0 50])
 title('b','units','normalized', 'Position', [-0.1,1.05,1]);
 
 box off
@@ -110,58 +124,40 @@ clear HSV_color
 clear subject_lines
 clear averaging_count
 %% Figure 2b. Mean (se) SNR over all arrays versus DPI.
+% define bin width in days
+bin_width = 30; %days
 
-% I used the same approach as the channel yield for SNR - calculate linear
-% regressions for each array's data, then average all of the fits together.
-% idk maybe it's okay, maybe it's not.
-
-iPlotName = 1;
+% define bins, out to the maximum number of relative days in the dataset
+bins = 0:bin_width:max([array_data.relative_days]);
+averaging_prep = zeros(length(array_names),size(bins,2)-1);
 for iArray = 1:length(array_names)
-%     if contains(array_names{iArray},'P1') || contains(array_names{iArray},'P2')
-%     else
-        
         file_count = 1;
+        SNR_temp = zeros(size(array_data,2),1);
+        relative_days_temp = zeros(size(array_data,2),1);
         for iFile = 1:size(array_data,2)
             if strcmp(array_data(iFile).array_name,array_names{iArray})
-                if ~ischar(array_data(iFile).SNR_all_channels)
-                    SNR_temp(file_count) = array_data(iFile).SNR_all_channels;
-                    relative_days_temp(file_count) = array_data(iFile).relative_days;
-                    file_count = file_count + 1;
-                end
+                SNR_temp(file_count) = array_data(iFile).SNR_good_channels;
+                relative_days_temp(file_count) = array_data(iFile).relative_days;
+                file_count = file_count + 1;
             end
-        end
+        end %iFile
         
-        plot_names{iPlotName} = strrep(array_names{iArray},'_',' ');
-        quad_fit_to_SNR = polyfit(relative_days_temp,SNR_temp,2);
-        quad_fit_to_SNR = ...
-            polyval(quad_fit_to_SNR,min(relative_days_temp):max(relative_days_temp));
-        
-        if max(quad_fit_to_SNR)>128
-            disp('stop, who are you even')
-        else
-            subject_lines{iPlotName,1} = min(relative_days_temp):max(relative_days_temp);
-            subject_lines{iPlotName,2} = quad_fit_to_SNR;
-        end
-        
-        averaging_prep(iArray,subject_lines{iPlotName,1}) = subject_lines{iPlotName,2};
-        
-        iPlotName = iPlotName + 1;
-        
+        for iBin = 1:(size(bins,2)-1)
+            averaging_prep(iArray,iBin) = nanmean(SNR_temp((relative_days_temp > bins(iBin)) & (relative_days_temp <= bins(iBin+1))));      
+        end %iBin
+               
         clear SNR_temp
         clear relative_days_temp
-%     end
-end
+end %iArray
 
-averaging_prep(averaging_prep == 0) = NaN;
-for iColumn = 1:size(averaging_prep,2)
-    averaging_count(iColumn) = sum(~isnan(averaging_prep(:,iColumn)));
-end
-avg_SNR = nanmean(averaging_prep,1);
-avg_SNR(isnan(avg_SNR)) = 0;
-std_SNR = nanstd(averaging_prep,1);
-std_SNR(isnan(std_SNR)) = 0;
-std_err_SNR = std_SNR ./ sqrt(averaging_count);
-std_err_SNR(isnan(std_err_SNR)) = 0;
+avg_SNR = zeros(size(bins,2)-1,1);
+std_SNR = zeros(size(bins,2)-1,1);
+std_err_SNR = zeros(size(bins,2)-1,1);
+for iBin = 1:(size(bins,2)-1)   
+    avg_SNR(iBin) = sum(averaging_prep(:,iBin),'omitnan')/sum(averaging_prep(:,iBin) > 0);
+    std_SNR(iBin) = std(averaging_prep(:,iBin),'omitnan');
+    std_err_SNR(iBin) = std_SNR(iBin) / sqrt(sum(averaging_prep(:,iBin) > 0));
+end %iBin
 
 subplot(2,4,5:7); hold on;
 
@@ -169,9 +165,9 @@ HSV_color = rgb2hsv(colors(2,:));
 HSV_color(2) = HSV_color(2) * .6;
 patch_color = hsv2rgb(HSV_color);
 
-patch([1:length(avg_SNR) fliplr(1:length(avg_SNR))],[avg_SNR-std_err_SNR fliplr(avg_SNR+std_err_SNR)],patch_color,'edgecolor','none')
-plot(avg_SNR,'linewidth',2,'Color',colors(2,:));
-xlim([0 1137])
+patch([bins(~isnan(std_err_SNR))+bin_width fliplr(bins(~isnan(std_err_SNR))+bin_width)],[(avg_SNR(~isnan(std_err_SNR))+std_err_SNR(~isnan(std_err_SNR)))' fliplr((avg_SNR(~isnan(std_err_SNR))-std_err_SNR(~isnan(std_err_SNR)))')],patch_color,'edgecolor','none')
+plot(bins(2:end),avg_SNR,'linewidth',2,'Color',colors(2,:));
+xlim([0 1500])
 
 box off
 grid on
@@ -179,12 +175,51 @@ xlabel('days post implantation');
 ylabel('SNR');
 title('c','units','normalized', 'Position', [-0.1,1.05,1]);
 
-
-%inset plot
+%%
+%inset plot for SNR
 subplot(2,4,8); hold on;
+% define bin width in days
+bin_width = 4; %days
 
-patch([1:length(avg_SNR) fliplr(1:length(avg_SNR))],[avg_SNR-std_err_SNR fliplr(avg_SNR+std_err_SNR)],patch_color,'edgecolor','none')
-plot(avg_SNR,'linewidth',2,'Color',colors(2,:));
+% define bins, out to the maximum number of relative days in the dataset
+bins = 0:bin_width:max([array_data.relative_days]);
+averaging_prep = zeros(length(array_names),size(bins,2)-1);
+for iArray = 1:length(array_names)
+        file_count = 1;
+        SNR_temp = zeros(size(array_data,2),1);
+        relative_days_temp = zeros(size(array_data,2),1);
+        for iFile = 1:size(array_data,2)
+            if strcmp(array_data(iFile).array_name,array_names{iArray})
+                SNR_temp(file_count) = array_data(iFile).SNR_good_channels;
+                relative_days_temp(file_count) = array_data(iFile).relative_days;
+                file_count = file_count + 1;
+            end
+        end %iFile
+        
+        for iBin = 1:(size(bins,2)-1)
+            averaging_prep(iArray,iBin) = nanmean(SNR_temp((relative_days_temp > bins(iBin)) & (relative_days_temp <= bins(iBin+1))));      
+        end %iBin
+               
+        clear SNR_temp
+        clear relative_days_temp
+end %iArray
+
+avg_SNR = zeros(size(bins,2)-1,1);
+std_SNR = zeros(size(bins,2)-1,1);
+std_err_SNR = zeros(size(bins,2)-1,1);
+for iBin = 1:(size(bins,2)-1)   
+    avg_SNR(iBin) = sum(averaging_prep(:,iBin),'omitnan')/sum(averaging_prep(:,iBin) > 0);
+    std_SNR(iBin) = std(averaging_prep(:,iBin),'omitnan');
+    std_err_SNR(iBin) = std_SNR(iBin) / sqrt(sum(averaging_prep(:,iBin) > 0));
+end %iBin
+
+
+HSV_color = rgb2hsv(colors(2,:));
+HSV_color(2) = HSV_color(2) * .6;
+patch_color = hsv2rgb(HSV_color);
+
+patch([bins(~isnan(std_err_SNR))+bin_width fliplr(bins(~isnan(std_err_SNR))+bin_width)],[(avg_SNR(~isnan(std_err_SNR))+std_err_SNR(~isnan(std_err_SNR)))' fliplr((avg_SNR(~isnan(std_err_SNR))-std_err_SNR(~isnan(std_err_SNR)))')],patch_color,'edgecolor','none')
+plot(bins(2:end),avg_SNR,'linewidth',2,'Color',colors(2,:));
 xlim([0 30])
 title('d','units','normalized', 'Position', [-0.1,1.05,1]);
 
