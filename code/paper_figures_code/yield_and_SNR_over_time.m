@@ -63,7 +63,7 @@ patch_color = hsv2rgb(HSV_color);
 patch([bins(~isnan(std_err_channels))+bin_width fliplr(bins(~isnan(std_err_channels))+bin_width)],[(avg_channels(~isnan(std_err_channels))+std_err_channels(~isnan(std_err_channels)))' fliplr((avg_channels(~isnan(std_err_channels))-std_err_channels(~isnan(std_err_channels)))')],patch_color,'edgecolor','none')
 plot(bins(2:end),avg_channels,'linewidth',2,'Color',colors(1,:));
 xlim([0 1500])
-
+ylim([0 1])
 
 box off
 grid on
@@ -114,6 +114,8 @@ subplot(2,4,4); hold on;
 patch([bins(~isnan(std_err_channels))+bin_width fliplr(bins(~isnan(std_err_channels))+bin_width)],[(avg_channels(~isnan(std_err_channels))+std_err_channels(~isnan(std_err_channels)))' fliplr((avg_channels(~isnan(std_err_channels))-std_err_channels(~isnan(std_err_channels)))')],patch_color,'edgecolor','none')
 plot(bins(2:end),avg_channels,'linewidth',2,'Color',colors(1,:));
 xlim([0 50])
+ylim([0 1])
+
 title('b','units','normalized', 'Position', [-0.1,1.05,1]);
 
 box off
@@ -168,6 +170,10 @@ patch_color = hsv2rgb(HSV_color);
 patch([bins(~isnan(std_err_SNR))+bin_width fliplr(bins(~isnan(std_err_SNR))+bin_width)],[(avg_SNR(~isnan(std_err_SNR))+std_err_SNR(~isnan(std_err_SNR)))' fliplr((avg_SNR(~isnan(std_err_SNR))-std_err_SNR(~isnan(std_err_SNR)))')],patch_color,'edgecolor','none')
 plot(bins(2:end),avg_SNR,'linewidth',2,'Color',colors(2,:));
 xlim([0 1500])
+ylim([min(avg_SNR) max(avg_SNR)])
+
+ylim_both = [min(avg_SNR) max(avg_SNR)];
+
 
 box off
 grid on
@@ -220,7 +226,9 @@ patch_color = hsv2rgb(HSV_color);
 
 patch([bins(~isnan(std_err_SNR))+bin_width fliplr(bins(~isnan(std_err_SNR))+bin_width)],[(avg_SNR(~isnan(std_err_SNR))+std_err_SNR(~isnan(std_err_SNR)))' fliplr((avg_SNR(~isnan(std_err_SNR))-std_err_SNR(~isnan(std_err_SNR)))')],patch_color,'edgecolor','none')
 plot(bins(2:end),avg_SNR,'linewidth',2,'Color',colors(2,:));
-xlim([0 30])
+xlim([0 50])
+ylim(ylim_both)
+
 title('d','units','normalized', 'Position', [-0.1,1.05,1]);
 
 box off

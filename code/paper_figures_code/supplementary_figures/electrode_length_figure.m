@@ -126,7 +126,7 @@ plot(date_range_for_plotting(find(length_test_percent)), length_test_percent(fin
 legend({'Short','Long'},'Location','SouthEast')
 xlabel('Months Post Implantation')
 xticks(date_range_for_plotting)
-ylabel('Percent Good Channels');
+ylabel('Average Yield');
 ylim([0 1]);
 yticks(0:.25:1)
 yticklabels({'0%' '25%' '50%' '75%' '100%'})
@@ -152,7 +152,7 @@ plot(date_range_for_plotting(find(length_test_snr)), length_test_snr(find(length
 legend({'Short','Long'},'Location','SouthEast')
 xlabel('Months Post Implantation')
 xticks(date_range_for_plotting)
-ylabel('Signal to Noise Ratio (SNR)');
+ylabel('Average Signal to Noise Ratio (SNR)');
 ylim([0 3.25])
 title('b','units','normalized', 'Position', [-0.1,1.05,1]);
 

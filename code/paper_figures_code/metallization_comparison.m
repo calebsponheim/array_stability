@@ -123,7 +123,7 @@ plot(date_range_for_plotting(find(metal_test_percent)), metal_test_percent(find(
 legend({'Platinum','Iridium Oxide'},'Location','SouthEast')
 xlabel('Months Post Implantation')
 xticks(date_range_for_plotting)
-ylabel('Percent Good Channels');
+ylabel('Average Yield');
 ylim([0 1]);
 
 yticks(0:.25:1)
@@ -150,7 +150,7 @@ legend({'Platinum','Iridium Oxide'},'Location','SouthEast')
 xlabel('Months Post Implantation')
 xticks(date_range_for_plotting)
 ylim([0 3.25])
-ylabel('Signal to Noise Ratio (SNR)');
+ylabel('Average Signal to Noise Ratio (SNR)');
 title('b','units','normalized', 'Position', [-0.1,1.05,1]);
 
 
