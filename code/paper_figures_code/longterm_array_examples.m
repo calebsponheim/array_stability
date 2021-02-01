@@ -10,14 +10,14 @@ function longterm_array_examples(array_data)
 figure('name','Long-term, chronic array recordings','visible','off','color','w');
 box off
 array_names = unique({array_data.array_name});
-array_names_for_legend = unique({array_data.array_name});
-colors = jet(length(array_names));
+array_names_for_legend = unique([array_data.array_name_abbrev]);
+colors = cool(length(array_names));
 set(gcf,'pos',[350,200,1000,750])
 
 %%
 
 % subplot spans were used to make the plots size correctly.
-subplot(2,3,1:3); hold on;
+subplot(2,2,1:2); hold on;
 
 iPlotName = 1;
 for iArray = 1:length(array_names)
@@ -32,7 +32,7 @@ for iArray = 1:length(array_names)
             end
         end
         
-        if max(relative_days_temp) > (365*2)
+        if max(relative_days_temp) > 1000
             plot_names{iPlotName} = strrep(array_names_for_legend{iArray},'_',' ');
             plot(relative_days_temp,good_channels_temp,'.','linewidth',1,'color',colors(iArray,:));
             quad_fit_to_good_channels = polyfit(relative_days_temp,good_channels_temp,1);
@@ -76,16 +76,15 @@ clear plots
 % actually pull in specific waveforms from specific files and have it be
 % all nice. for now, it's hacky. Whoops!
 
-subplot(2,3,4); hold on;
+subplot(2,2,3); hold on;
 
-t = text(0.1,.5,{'waveform', 'examples','go here'});
-title('b','units','normalized', 'Position', [-0.1,1.05,1]);
-t.FontSize = 24;
+title('b','units','normalized', 'Position', [-0.2,1.05,1]);
+set(gca, 'Color','w', 'XColor','w', 'YColor','w')
 
 
 %% Figure 1c. Mean SNR versus DPI for three example arrays (3 line graphs).
 
-subplot(2,3,5:6); hold on;
+subplot(2,2,4); hold on;
 
 iPlotName = 1;
 for iArray = 1:length(array_names)
@@ -93,7 +92,7 @@ for iArray = 1:length(array_names)
 %     else
     file_count = 1;
     for iFile = 1:size(array_data,2)
-        if strcmp(array_data(iFile).array_name,array_names{iArray})
+        if strcmp(array_data(iFile).array_name,'Mack_M1mb')
             if ~ischar(array_data(iFile).SNR_all_channels) && ~isnan(array_data(iFile).SNR_all_channels)
                 SNR_temp(file_count) = array_data(iFile).SNR_all_channels;
                 relative_days_temp(file_count) = array_data(iFile).relative_days;
@@ -102,8 +101,8 @@ for iArray = 1:length(array_names)
         end
     end
     
-    if max(relative_days_temp) > (365*2)
-        plot_names{iPlotName} = strrep(array_names{iArray},'_',' ');
+    if (max(relative_days_temp) > 1000) && (strcmp(array_names{iArray},'Mack_M1mb'))
+        plot_names{iPlotName} = strrep(array_names_for_legend{iArray},'_',' ');
         plot(relative_days_temp,SNR_temp,'.','linewidth',1,'color',colors(iArray,:));
         
         % Linear Regression to each array's data points.
@@ -129,7 +128,7 @@ xlim([0 max([array_data.relative_days])]);
 box off
 
 legend([plots{:}],plot_names,'location','northeastoutside')
-title('C','units','normalized', 'Position', [-0.1,1.05,1]);
+title('c','units','normalized', 'Position', [-0.1,1.05,1]);
 grid on
 xlabel('Days Post Implantation');
 

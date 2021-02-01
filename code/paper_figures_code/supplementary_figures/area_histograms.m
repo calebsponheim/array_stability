@@ -43,7 +43,7 @@ end
 
 subplot(1,3,2)
 bar(.05:.1:.95,histcounts(array_max_good_channels,0:.1:1))
-xlabel('Proportion of Total Channels')
+xlabel('Maximum Percentage Yield')
 ylabel('Number of Arrays')
 xticks(0:.1:1)
 xlim([0 1.1])

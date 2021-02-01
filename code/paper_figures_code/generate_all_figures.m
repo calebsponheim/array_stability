@@ -13,6 +13,7 @@ yield_over_time(array_data)
 area_histograms(array_data)
 electrode_length_figure(array_data)
 snr_by_area(array_data)
+human_summary_figure(array_data)
 
 %%
 

@@ -20,7 +20,7 @@ for iArray = 1:length(array_names)
         good_channels_temp = zeros(size(array_data,2),1);
         relative_days_temp = zeros(size(array_data,2),1);
         for iFile = 1:size(array_data,2)
-            if strcmp(array_data(iFile).array_name,array_names{iArray})
+            if strcmp(array_data(iFile).array_name,array_names{iArray}) && strcmp(array_data(iArray).species,'NHP')
                 good_channels_temp(file_count) = array_data(iFile).num_good_channels_corrected / array_data(iFile).total_num_of_channels;
                 relative_days_temp(file_count) = array_data(iFile).relative_days;
                 file_count = file_count + 1;
@@ -67,8 +67,9 @@ ylim([0 1])
 
 box off
 grid on
-xlabel('Days Post Implantation');
-ylabel('Channel Yield (proportion of total number)');
+xlabel('Days Post-Implant');
+ylabel('Electrode Yield (Percentage of total number)');
+yticklabels({'0%','20%','40%','60%','80%','100%'})
 title('a','units','normalized', 'Position', [-0.1,1.05,1]);
 
 %% making inset with different bin size to show increase post-implant
@@ -84,7 +85,7 @@ for iArray = 1:length(array_names)
         good_channels_temp = zeros(size(array_data,2),1);
         relative_days_temp = zeros(size(array_data,2),1);
         for iFile = 1:size(array_data,2)
-            if strcmp(array_data(iFile).array_name,array_names{iArray})
+            if strcmp(array_data(iFile).array_name,array_names{iArray}) && strcmp(array_data(iArray).species,'NHP')
                 good_channels_temp(file_count) = array_data(iFile).num_good_channels_corrected / array_data(iFile).total_num_of_channels;
                 relative_days_temp(file_count) = array_data(iFile).relative_days;
                 file_count = file_count + 1;
@@ -119,7 +120,7 @@ ylim([0 1])
 title('b','units','normalized', 'Position', [-0.1,1.05,1]);
 
 box off
-xlabel('days post implantation');
+xlabel('Days Post-Implant');
 
 clear averaging_prep
 clear HSV_color
@@ -137,7 +138,7 @@ for iArray = 1:length(array_names)
         SNR_temp = zeros(size(array_data,2),1);
         relative_days_temp = zeros(size(array_data,2),1);
         for iFile = 1:size(array_data,2)
-            if strcmp(array_data(iFile).array_name,array_names{iArray})
+            if strcmp(array_data(iFile).array_name,array_names{iArray}) && strcmp(array_data(iArray).species,'NHP')
                 SNR_temp(file_count) = array_data(iFile).SNR_good_channels;
                 relative_days_temp(file_count) = array_data(iFile).relative_days;
                 file_count = file_count + 1;
@@ -170,9 +171,9 @@ patch_color = hsv2rgb(HSV_color);
 patch([bins(~isnan(std_err_SNR))+bin_width fliplr(bins(~isnan(std_err_SNR))+bin_width)],[(avg_SNR(~isnan(std_err_SNR))+std_err_SNR(~isnan(std_err_SNR)))' fliplr((avg_SNR(~isnan(std_err_SNR))-std_err_SNR(~isnan(std_err_SNR)))')],patch_color,'edgecolor','none')
 plot(bins(2:end),avg_SNR,'linewidth',2,'Color',colors(2,:));
 xlim([0 1500])
-ylim([min(avg_SNR) max(avg_SNR)])
+ylim([0 max(avg_SNR)])
 
-ylim_both = [min(avg_SNR) max(avg_SNR)];
+ylim_both = [0 max(avg_SNR)];
 
 
 box off
@@ -195,7 +196,7 @@ for iArray = 1:length(array_names)
         SNR_temp = zeros(size(array_data,2),1);
         relative_days_temp = zeros(size(array_data,2),1);
         for iFile = 1:size(array_data,2)
-            if strcmp(array_data(iFile).array_name,array_names{iArray})
+            if strcmp(array_data(iFile).array_name,array_names{iArray}) && strcmp(array_data(iArray).species,'NHP')
                 SNR_temp(file_count) = array_data(iFile).SNR_good_channels;
                 relative_days_temp(file_count) = array_data(iFile).relative_days;
                 file_count = file_count + 1;
