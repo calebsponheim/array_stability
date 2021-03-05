@@ -29,7 +29,7 @@ for iArray = 1:numel(array_names)
     
     % Metallization
     
-    if contains(array_data(array_files_indices_temp(1)).metallization,'Platinum')
+    if contains(array_data(array_files_indices_temp(1)).metallization(1),'Platinum') && contains(array_data(array_files_indices_temp(1)).species,'NHP')
         for iWindow = 1:size(date_range,1)
             array_files_indices_temp_window = relative_days_array_temp >= date_range(iWindow,1) & relative_days_array_temp <= date_range(iWindow,2);
             if sum(array_files_indices_temp_window) > 0
@@ -39,7 +39,7 @@ for iArray = 1:numel(array_names)
             end
         end
         plat_count = plat_count + 1;
-    elseif contains(array_data(array_files_indices_temp(1)).metallization,'Iridium Oxide')
+    elseif contains(array_data(array_files_indices_temp(1)).metallization(1),'Iridium Oxide') && contains(array_data(array_files_indices_temp(1)).species,'NHP')
         for iWindow = 1:size(date_range,1)
             array_files_indices_temp_window = relative_days_array_temp >= date_range(iWindow,1) & relative_days_array_temp <= date_range(iWindow,2);
             if sum(array_files_indices_temp_window) > 0
@@ -103,7 +103,8 @@ end
 %% Plotting
 figure('visible','off','color','w','pos',[100 100 500 400]); hold on
 
-colors = winter(2);
+colors = lines(7);
+colors = colors([1,2],:);
 % subplot one: Metal Channel Percent
 subplot(1,2,1); hold on;
 % plot std err patches
@@ -123,7 +124,7 @@ plot(date_range_for_plotting(find(metal_test_percent)), metal_test_percent(find(
 legend({'Platinum','Iridium Oxide'},'Location','SouthEast')
 xlabel('Months Post Implantation')
 xticks(date_range_for_plotting)
-ylabel('Average Yield');
+ylabel('Average Electrode Yield');
 ylim([0 1]);
 
 yticks(0:.25:1)

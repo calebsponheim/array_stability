@@ -29,7 +29,7 @@ for iArray = 1:numel(array_names)
     
     % Electrode Length
     
-    if array_data(array_files_indices_temp(1)).electrode_length == 1
+    if (array_data(array_files_indices_temp(1)).electrode_length(1) == 1)  && contains(array_data(array_files_indices_temp(1)).species,'NHP')
         for iWindow = 1:size(date_range,1)
             array_files_indices_temp_window = relative_days_array_temp >= date_range(iWindow,1) & relative_days_array_temp <= date_range(iWindow,2);
             if sum(array_files_indices_temp_window) > 0
@@ -39,7 +39,7 @@ for iArray = 1:numel(array_names)
             end
         end
         short_count = short_count + 1;
-    elseif array_data(array_files_indices_temp(1)).electrode_length == 1.5
+    elseif (array_data(array_files_indices_temp(1)).electrode_length(1) == 1.5) && contains(array_data(array_files_indices_temp(1)).species,'NHP')
         for iWindow = 1:size(date_range,1)
             array_files_indices_temp_window = relative_days_array_temp >= date_range(iWindow,1) & relative_days_array_temp <= date_range(iWindow,2);
             if sum(array_files_indices_temp_window) > 0
@@ -105,7 +105,8 @@ figure('visible','off','color','w','pos',[100 100 500 400]); hold on
 
 % subplot one: Length Channel Percent
 
-colors = hsv(2);
+colors = lines(7);
+colors = colors([4,5],:);
 
 subplot(1,2,1); hold on;
 
@@ -130,7 +131,7 @@ ylabel('Average Yield');
 ylim([0 1]);
 yticks(0:.25:1)
 yticklabels({'0%' '25%' '50%' '75%' '100%'})
-title('a','units','normalized', 'Position', [-0.1,1.05,1]);
+title('c','units','normalized', 'Position', [-0.1,1.05,1]);
 
 % subplot two: Length SNR
 subplot(1,2,2); hold on;
@@ -154,7 +155,7 @@ xlabel('Months Post Implantation')
 xticks(date_range_for_plotting)
 ylabel('Average Signal to Noise Ratio (SNR)');
 ylim([0 3.25])
-title('b','units','normalized', 'Position', [-0.1,1.05,1]);
+title('d','units','normalized', 'Position', [-0.1,1.05,1]);
 
 %% Saving
 if startsWith(matlab.desktop.editor.getActiveFilename,'C:\Users\calebsponheim\Documents\')

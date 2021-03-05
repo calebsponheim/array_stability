@@ -11,7 +11,7 @@ figure('name','Long-term, chronic array recordings','visible','off','color','w')
 box off
 array_names = unique({array_data.array_name});
 array_names_for_legend = unique([array_data.array_name_abbrev]);
-colors = cool(length(array_names));
+colors = lines(length(array_names));
 set(gcf,'pos',[350,200,1000,750])
 
 %%

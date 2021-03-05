@@ -15,7 +15,6 @@ file_count = 0;
 array_data = [];
 
 subject_array_info = readtable('.\data\subject_info_data.csv');
-
 % only two nested for-loops! lol
 for iSheet = 1:length(sheets_to_read)
     if contains(sheets_to_read(iSheet),'_') % this is a very brittle way to ignore the bad sheets in the excel workbook.

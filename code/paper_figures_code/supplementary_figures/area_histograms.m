@@ -8,7 +8,7 @@ function area_histograms(array_data)
 
 %%
 figure('name','Histograms','visible','off','color','w');
-set(gcf,'pos',[350,400,1700,400])
+set(gcf,'pos',[350,400,750,500])
 array_names = unique({array_data.array_name});
 all_array_names_temp = {array_data.array_name};
 all_good_channels_temp = [array_data.num_good_channels_corrected];
@@ -20,57 +20,18 @@ for iArray = 1:length(array_names)
         ./all_total_num_channels_temp(array_files_index));
 end
 
-subplot(1,3,1)
 bar(.05:.1:.95,histcounts(array_max_good_channels,0:.1:1))
-xlabel('Proportion of Total Channels')
+xlabel('Electrode Yield')
 ylabel('Number of Arrays')
 xticks(0:.1:1)
-xlim([0 1.1])
-title('a','units','normalized', 'Position', [-0.1,1.05,1]);
+xlim([0 1])
+% title('a','units','normalized', 'Position', [-0.1,1.05,1]);
+grid on
 box off
 
-clear array_max_good_channels
-%% Figure 5b: Distribution of max # of electrodes over M1 arrays
-array_count = 1;
-for iArray = 1:length(array_names)
-    if strfind(array_names{iArray},'M1')
-        array_files_index = cellfun(@(x) strcmp(x,array_names{iArray}),all_array_names_temp);
-        array_max_good_channels(array_count) = max(all_good_channels_temp(array_files_index)...
-            ./all_total_num_channels_temp(array_files_index));
-        array_count = array_count + 1;
-    end
-end
+%% second plot
 
-subplot(1,3,2)
-bar(.05:.1:.95,histcounts(array_max_good_channels,0:.1:1))
-xlabel('Maximum Percentage Yield')
-ylabel('Number of Arrays')
-xticks(0:.1:1)
-xlim([0 1.1])
-title('b','units','normalized', 'Position', [-0.1,1.05,1]);
-box off
 
-clear array_max_good_channels
-%% Figure 5c: Distribution of max # of electrodes over PMd and PMv arrays
-
-array_count = 1;
-for iArray = 1:length(array_names)
-    if strfind(array_names{iArray},'PM')
-        array_files_index = cellfun(@(x) strcmp(x,array_names{iArray}),all_array_names_temp);
-        array_max_good_channels(array_count) = max(all_good_channels_temp(array_files_index)...
-            ./all_total_num_channels_temp(array_files_index));
-        array_count = array_count + 1;
-    end
-end
-
-subplot(1,3,3)
-bar(.05:.1:.95,histcounts(array_max_good_channels,0:.1:1))
-xlabel('Proportion of Total Channels')
-ylabel('Number of Arrays')
-xticks(0:.1:1)
-xlim([0 1.1])
-title('c','units','normalized', 'Position', [-0.1,1.05,1]);
-box off
 
 clear array_max_good_channels
 %% Saving

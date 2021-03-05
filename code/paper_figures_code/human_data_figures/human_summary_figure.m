@@ -1,7 +1,7 @@
 function human_summary_figure(array_data)
 
 % long-term figure for panel A and B (top left and top right,
-% respectively), with channel yield and SNR. 
+% respectively), with channel yield and SNR.
 
 array_count = 1;
 for iArray = 1:size(array_data,2)
@@ -24,29 +24,29 @@ bin_width = 30; %days
 bins = 0:bin_width:max([human_array_data.relative_days]);
 averaging_prep = zeros(length(array_names),size(bins,2)-1);
 for iArray = 1:length(array_names)
-        file_count = 1;
-        good_channels_temp = zeros(size(human_array_data,2),1);
-        relative_days_temp = zeros(size(human_array_data,2),1);
-        for iFile = 1:size(human_array_data,2)
-            if strcmp(human_array_data(iFile).array_name,array_names{iArray})
-                good_channels_temp(file_count) = human_array_data(iFile).num_good_channels_corrected / human_array_data(iFile).total_num_of_channels;
-                relative_days_temp(file_count) = human_array_data(iFile).relative_days;
-                file_count = file_count + 1;
-            end
-        end %iFile
-        
-        for iBin = 1:(size(bins,2)-1)
-            averaging_prep(iArray,iBin) = nanmean(good_channels_temp((relative_days_temp > bins(iBin)) & (relative_days_temp <= bins(iBin+1))));      
-        end %iBin
-               
-        clear good_channels_temp
-        clear relative_days_temp
+    file_count = 1;
+    good_channels_temp = zeros(size(human_array_data,2),1);
+    relative_days_temp = zeros(size(human_array_data,2),1);
+    for iFile = 1:size(human_array_data,2)
+        if strcmp(human_array_data(iFile).array_name,array_names{iArray})
+            good_channels_temp(file_count) = human_array_data(iFile).num_good_channels_corrected / human_array_data(iFile).total_num_of_channels;
+            relative_days_temp(file_count) = human_array_data(iFile).relative_days;
+            file_count = file_count + 1;
+        end
+    end %iFile
+    
+    for iBin = 1:(size(bins,2)-1)
+        averaging_prep(iArray,iBin) = nanmean(good_channels_temp((relative_days_temp > bins(iBin)) & (relative_days_temp <= bins(iBin+1))));
+    end %iBin
+    
+    clear good_channels_temp
+    clear relative_days_temp
 end %iArray
 
 avg_channels = zeros(size(bins,2)-1,1);
 std_channels = zeros(size(bins,2)-1,1);
 std_err_channels = zeros(size(bins,2)-1,1);
-for iBin = 1:(size(bins,2)-1)   
+for iBin = 1:(size(bins,2)-1)
     avg_channels(iBin) = sum(averaging_prep(:,iBin),'omitnan')/sum(averaging_prep(:,iBin) > 0);
     std_channels(iBin) = std(averaging_prep(:,iBin),'omitnan');
     std_err_channels(iBin) = std_channels(iBin) / sqrt(sum(averaging_prep(:,iBin) > 0));
@@ -55,7 +55,7 @@ end %iBin
 %% initializing figure
 figure('name','SNR and Channel Yield over time, all arrays','visible','off','color','w');
 box off
-colors = autumn(4);
+colors = lines(4);
 set(gcf,'pos',[350,200,1000,750])
 
 %main plot
@@ -87,29 +87,29 @@ bin_width = 30; %days
 bins = 0:bin_width:max([human_array_data.relative_days]);
 averaging_prep = zeros(length(array_names),size(bins,2)-1);
 for iArray = 1:length(array_names)
-        file_count = 1;
-        SNR_temp = zeros(size(human_array_data,2),1);
-        relative_days_temp = zeros(size(human_array_data,2),1);
-        for iFile = 1:size(human_array_data,2)
-            if strcmp(human_array_data(iFile).array_name,array_names{iArray})
-                SNR_temp(file_count) = human_array_data(iFile).SNR_good_channels;
-                relative_days_temp(file_count) = human_array_data(iFile).relative_days;
-                file_count = file_count + 1;
-            end
-        end %iFile
-        
-        for iBin = 1:(size(bins,2)-1)
-            averaging_prep(iArray,iBin) = nanmean(SNR_temp((relative_days_temp > bins(iBin)) & (relative_days_temp <= bins(iBin+1))));      
-        end %iBin
-               
-        clear SNR_temp
-        clear relative_days_temp
+    file_count = 1;
+    SNR_temp = zeros(size(human_array_data,2),1);
+    relative_days_temp = zeros(size(human_array_data,2),1);
+    for iFile = 1:size(human_array_data,2)
+        if strcmp(human_array_data(iFile).array_name,array_names{iArray})
+            SNR_temp(file_count) = human_array_data(iFile).SNR_good_channels;
+            relative_days_temp(file_count) = human_array_data(iFile).relative_days;
+            file_count = file_count + 1;
+        end
+    end %iFile
+    
+    for iBin = 1:(size(bins,2)-1)
+        averaging_prep(iArray,iBin) = nanmean(SNR_temp((relative_days_temp > bins(iBin)) & (relative_days_temp <= bins(iBin+1))));
+    end %iBin
+    
+    clear SNR_temp
+    clear relative_days_temp
 end %iArray
 
 avg_SNR = zeros(size(bins,2)-1,1);
 std_SNR = zeros(size(bins,2)-1,1);
 std_err_SNR = zeros(size(bins,2)-1,1);
-for iBin = 1:(size(bins,2)-1)   
+for iBin = 1:(size(bins,2)-1)
     avg_SNR(iBin) = sum(averaging_prep(:,iBin),'omitnan')/sum(averaging_prep(:,iBin) > 0);
     std_SNR(iBin) = std(averaging_prep(:,iBin),'omitnan');
     std_err_SNR(iBin) = std_SNR(iBin) / sqrt(sum(averaging_prep(:,iBin) > 0));
@@ -138,23 +138,43 @@ title('b','units','normalized', 'Position', [-0.1,1.05,1]);
 %% Individual lines
 
 array_names_for_legend = unique({human_array_data.array_name});
-colors = jet(length(array_names));
+colors = lines(length(array_names));
 
 % subplot spans were used to make the plots size correctly.
 subplot(4,2,[5,7]); hold on;
 
 iPlotName = 1;
 for iArray = 1:length(array_names)
-        file_count = 1;
-        for iFile = 1:size(human_array_data,2)
-            if strcmp(human_array_data(iFile).array_name,array_names{iArray})
-                good_channels_temp(file_count) = human_array_data(iFile).num_good_channels_corrected / human_array_data(iFile).total_num_of_channels;
-                relative_days_temp(file_count) = human_array_data(iFile).relative_days;
-                file_count = file_count + 1;
-            end
+    file_count = 1;
+    for iFile = 1:size(human_array_data,2)
+        if strcmp(human_array_data(iFile).array_name,array_names{iArray})
+            good_channels_temp(file_count) = human_array_data(iFile).num_good_channels_corrected / human_array_data(iFile).total_num_of_channels;
+            relative_days_temp(file_count) = human_array_data(iFile).relative_days;
+            file_count = file_count + 1;
         end
-        
-        if max(relative_days_temp) > (365*2)
+    end
+    
+    if max(relative_days_temp) > (365*2)
+        if strcmp(array_names{iArray},'P1_A') || strcmp(array_names{iArray},'P1_P')
+            plot_names{iPlotName} = strrep(array_names_for_legend{iArray},'_',' ');
+            plot(relative_days_temp,good_channels_temp,'.','linewidth',1,'color',colors(iArray,:));
+            
+            % First Half
+            quad_fit_to_good_channels = polyfit(relative_days_temp(relative_days_temp <= 563),good_channels_temp(relative_days_temp <= 563),1);
+            quad_fit_to_good_channels = ...
+                polyval(quad_fit_to_good_channels,min(relative_days_temp(relative_days_temp <= 563)):1:max(relative_days_temp(relative_days_temp <= 563)));
+            plots{iPlotName} = ...
+                    plot(min(relative_days_temp(relative_days_temp <= 563)):1:max(relative_days_temp(relative_days_temp <= 563)),...
+                    quad_fit_to_good_channels,'-','color',colors(iArray,:),'linewidth',2);
+            % Second Half
+            quad_fit_to_good_channels = polyfit(relative_days_temp(relative_days_temp > 563),good_channels_temp(relative_days_temp > 563),1);
+            quad_fit_to_good_channels = ...
+                polyval(quad_fit_to_good_channels,min(relative_days_temp(relative_days_temp > 563)):1:max(relative_days_temp(relative_days_temp > 563)));
+            plot(min(relative_days_temp(relative_days_temp > 563)):1:max(relative_days_temp(relative_days_temp > 563)),...
+            quad_fit_to_good_channels,'-','color',colors(iArray,:),'linewidth',2);
+            
+            iPlotName = iPlotName + 2;
+        else
             plot_names{iPlotName} = strrep(array_names_for_legend{iArray},'_',' ');
             plot(relative_days_temp,good_channels_temp,'.','linewidth',1,'color',colors(iArray,:));
             quad_fit_to_good_channels = polyfit(relative_days_temp,good_channels_temp,1);
@@ -170,22 +190,23 @@ for iArray = 1:length(array_names)
             end
             iPlotName = iPlotName + 1;
         end
-        
-        clear good_channels_temp
-        clear relative_days_temp
-%     end
+    end
+    
+    clear good_channels_temp
+    clear relative_days_temp
+    %     end
 end
-ylabel('Percent Good Channels');
+ylabel('Electrode Yield (Percentage of total number)');
 ylim([0 1]);
 yticks(0:.25:1)
 yticklabels({'0%' '25%' '50%' '75%' '100%'})
 xlim([0 max([human_array_data.relative_days])]);
 box off
 
-legend([plots{:}],plot_names,'location','northeastoutside')
+legend([plots{:}],plot_names([1,3,5,6]),'location','northeastoutside')
 
 grid on
-xlabel('Days Post Implantation');
+xlabel('Days Post-4Implant');
 title('c','units','normalized', 'Position', [-0.25,.95,1]);
 clear plot_names
 clear plots
@@ -225,7 +246,7 @@ for iArray = 1:length(array_names)
     
     clear SNR_temp
     clear relative_days_temp
-%     end
+    %     end
 end
 ylabel('Signal to Noise Ratio');
 ylim([0 max([human_array_data.SNR_all_channels])]);
