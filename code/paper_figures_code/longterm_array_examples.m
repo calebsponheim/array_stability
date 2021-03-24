@@ -11,7 +11,12 @@ figure('name','Long-term, chronic array recordings','visible','off','color','w')
 box off
 array_names = unique({array_data.array_name});
 array_names_for_legend = unique([array_data.array_name_abbrev]);
-colors = lines(length(array_names));
+colors = hsv(length(array_names));
+[n,~] = size(colors) ;
+idx = randperm(n) ;
+colors_shuffled = colors ;
+colors_shuffled(idx,:) = colors(:,:);
+colors = colors_shuffled;
 set(gcf,'pos',[350,200,1000,750])
 
 %%
@@ -32,7 +37,7 @@ for iArray = 1:length(array_names)
             end
         end
         
-        if max(relative_days_temp) > 1000
+        if max(relative_days_temp) > 800
             plot_names{iPlotName} = strrep(array_names_for_legend{iArray},'_',' ');
             plot(relative_days_temp,good_channels_temp,'.','linewidth',1,'color',colors(iArray,:));
             quad_fit_to_good_channels = polyfit(relative_days_temp,good_channels_temp,1);
@@ -63,7 +68,7 @@ box off
 legend([plots{:}],plot_names,'location','northeastoutside')
 
 grid on
-xlabel('Days Post Implantation');
+xlabel('Days Post-Implantation');
 title('a','units','normalized', 'Position', [-0.1,1.05,1]);
 clear plot_names
 clear plots
@@ -130,7 +135,7 @@ box off
 legend([plots{:}],plot_names,'location','northeastoutside')
 title('c','units','normalized', 'Position', [-0.1,1.05,1]);
 grid on
-xlabel('Days Post Implantation');
+xlabel('Days Post-Implantation');
 
 %% Save
 

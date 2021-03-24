@@ -122,7 +122,7 @@ plot(date_range_for_plotting, mean_irid_percent,    'o-','Color',colors(2,:));
 plot(date_range_for_plotting(find(metal_test_percent)), metal_test_percent(find(metal_test_percent))*.75,'*k')
 
 legend({'Platinum','Iridium Oxide'},'Location','SouthEast')
-xlabel('Months Post Implantation')
+xlabel('Months Post-Implantation')
 xticks(date_range_for_plotting)
 ylabel('Average Electrode Yield');
 ylim([0 1]);
@@ -148,7 +148,7 @@ plot(date_range_for_plotting, mean_irid_snr,    'o-','Color',colors(2,:));
 plot(date_range_for_plotting(find(metal_test_snr)), metal_test_snr(find(metal_test_snr))*3.2,'*k')
 
 legend({'Platinum','Iridium Oxide'},'Location','SouthEast')
-xlabel('Months Post Implantation')
+xlabel('Months Post-Implantation')
 xticks(date_range_for_plotting)
 ylim([0 3.25])
 ylabel('Average Signal to Noise Ratio (SNR)');

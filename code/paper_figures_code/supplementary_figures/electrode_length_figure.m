@@ -125,7 +125,7 @@ plot(date_range_for_plotting, mean_long_percent,    'o-','Color',colors(2,:));
 plot(date_range_for_plotting(find(length_test_percent)), length_test_percent(find(length_test_percent))*.75,'*k')
 
 legend({'Short','Long'},'Location','SouthEast')
-xlabel('Months Post Implantation')
+xlabel('Months Post-Implantation')
 xticks(date_range_for_plotting)
 ylabel('Average Yield');
 ylim([0 1]);
@@ -151,7 +151,7 @@ plot(date_range_for_plotting, mean_long_snr,    'o-','Color',colors(2,:));
 plot(date_range_for_plotting(find(length_test_snr)), length_test_snr(find(length_test_snr))*3.2,'*k')
 
 legend({'Short','Long'},'Location','SouthEast')
-xlabel('Months Post Implantation')
+xlabel('Months Post-Implantation')
 xticks(date_range_for_plotting)
 ylabel('Average Signal to Noise Ratio (SNR)');
 ylim([0 3.25])

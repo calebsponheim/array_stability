@@ -72,7 +72,7 @@ hold off
 
 % plotting the main figure
 hold(ax1, 'on');
-xlabel('Days post-implant');
+xlabel('Days Post-Implantation');
 ylabel('Implant Order (By Lifetime Length)');
 xticks(0:250:3250)  
 ylim([0 max(implant_order)+1])

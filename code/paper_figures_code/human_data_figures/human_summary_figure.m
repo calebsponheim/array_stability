@@ -75,7 +75,7 @@ ylim([0 1])
 
 box off
 grid on
-xlabel('Days Post Implantation');
+xlabel('Days Post-Implantation');
 ylabel('Proportion of Total Channels');
 title('a','units','normalized', 'Position', [-0.1,1.05,1]);
 
@@ -131,7 +131,7 @@ ylim_both = [min(avg_SNR) max(avg_SNR)];
 
 box off
 grid on
-xlabel('days post implantation');
+xlabel('Days Post-Implantation');
 ylabel('SNR');
 title('b','units','normalized', 'Position', [-0.1,1.05,1]);
 
@@ -206,7 +206,7 @@ box off
 legend([plots{:}],plot_names([1,3,5,6]),'location','northeastoutside')
 
 grid on
-xlabel('Days Post-4Implant');
+xlabel('Days Post-Implantation');
 title('c','units','normalized', 'Position', [-0.25,.95,1]);
 clear plot_names
 clear plots
@@ -256,7 +256,7 @@ box off
 legend([plots{:}],plot_names,'location','northeastoutside')
 title('d','units','normalized', 'Position', [-0.25,.95,1]);
 grid on
-xlabel('Days Post Implantation');
+xlabel('Days Post-Implantation');
 %%
 if startsWith(matlab.desktop.editor.getActiveFilename,'C:\Users\calebsponheim\Documents\')
     saveas(gcf,'C:\Users\calebsponheim\Documents\git\array_stability\figures\paper_figures\human_data_figure.png');

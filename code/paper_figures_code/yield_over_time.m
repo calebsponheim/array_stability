@@ -74,7 +74,7 @@ plot(time_points_in_days/one_month,percent_arrays_above_threshold(:,2)...
     ,'o-','linewidth',2,'color',colors(2,:),'Displayname','20% Yield')
 plot(time_points_in_days/one_month,percent_arrays_above_threshold(:,3)...
     ,'o-','linewidth',2,'color',colors(3,:),'Displayname','40% Yield')
-xlabel('Months Post Implantation')
+xlabel('Months Post-Implantation')
 legend()
 xticks(time_points_in_days/one_month);
 ylabel('Proportion of Arrays with Certain Yields')

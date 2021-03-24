@@ -1,78 +1,59 @@
-Array_Name,Abbrev,Animal,Brain_Area,Implant_Date,Electrode_Length,Size,Metallization,Number_of_Recordings
-Athena_M1a,AtM1,Athena,M1,80123,1.5,NaN,Platinum,NaN
-Athena_M1o,AtM1o,Athena,M1o,80123,1,96,Platinum,13
-Athena_PMv,AtPmv,Athena,PMv,80123,1,96,Platinum,47
-Athena_M1b,AtM1b,Athena,M1,130305,1,128,Iridium Oxide,40
-BigPapi_S1o,BiS1o,Big Papi,S1o,100824,1,NaN,Iridium Oxide,NaN
-BigPapi_CMA,BiCMA,Big Papi,CMA,100824,1,NaN,Iridium Oxide,NaN
-BigPapi_M1,BiM1,Big Papi,M1o,100824,1,96,Iridium Oxide,10
-Boo_M1_1,BoM1a,Boo,M1,30128,1,96,Platinum,6
-Boo_PMd_1,BoPMda,Boo,PMd,30128,1,96,Platinum,317
-Boo_M1_2,BoM1b,Boo,M1,80408,1.5,96,Iridium Oxide,68
-Boo_PMd_2,BoPMdb,Boo,PMd,80408,1,96,Platinum,68
-Breaux_PM,BxPM,Breaux,PM,171003,1.5,NaN,Iridium Oxide,NaN
-Breaux_M1,BxM1,Breaux,M1,171003,1.5,NaN,Iridium Oxide,NaN
-Bud_M1,BuM1,Bud,M1,110418,1,NaN,Platinum,NaN
-Bud_S1,BuS1,Bud,S1,110418,1,NaN,Platinum,NaN
-Coco_M1,CoM1,Coco,M1,90413,1.5,96,Platinum,68
-Coco_PMv,CoPMv,Coco,PMv,90413,1.5,96,Platinum,54
-Coco_PMd,CoPMd,Coco,PMd,90413,1,96,Platinum,82
-Hestia_M1o,HeM1o,Hestia,M1o,151028,1.5,NaN,Iridium Oxide,NaN
-Hestia_CMA,HeCMA,Hestia,CMA,151028,1,NaN,Iridium Oxide,NaN
-Hestia_S1o,HeS1o,Hestia,S1o,151028,1,NaN,Iridium Oxide,NaN
-Jaco_M1,JaM1,Jaco,M1,121002,1.5,NaN,Iridium Oxide,NaN
-Jaco_PMv,JaPMv,Jaco,PMv,121002,1.5,96,Iridium Oxide,27
-Jaco_PMd,JaPMd,Jaco,PMd,121002,1,96,Iridium Oxide,17
-Kiki_M1contra,KiM1con,Kiki,M1con,120604,1,96,Iridium Oxide,51
-Kiki_M1ipsi,KiM1ips,Kiki,M1ipsi,120604,1,96,Iridium Oxide,327
-Lester_M1_RH,LeM1a,Lester,M1,110711,1.5,96,Iridium Oxide,38
-Lester_PMv,LePMv,Lester,PMv,110711,1.5,96,Platinum,25
-Lester_PMd,LePMd,Lester,PMd,110711,1.5,96,Platinum,32
-Lester_M1m_LH,LeM1b,Lester,M1m,150720,1,128,Iridium Oxide,63
-Lester_M1l_LH,LeM1c,Lester,M1l,150720,1,128,Iridium Oxide,202
-Mack_PMd,MkPMd,Mack,PMd,60906,1,96,Platinum,14
-Mack_M1ma,MkM1a,Mack,M1m,60906,1,96,Platinum,28
-Mack_M1l,MkM1b,Mack,M1l,60906,1,96,Platinum,32
-Mack_M1mb,MkM1c,Mack,M1m,71128,1,96,Iridium Oxide,501
-Mack_M1lb,MkM1d,Mack,M1l,71128,1,96,??,32
-Nikki_M1,NiM1,Nikki,M1,41103,1,96,Platinum,86
-Nikki_PMd,NiPMd,Nikki,PMd,41103,1,96,Platinum,21
-Nikki_PMv,NiPMv,Nikki,PMv,41103,1,96,Platinum,91
-Nike_M1ipsi,NkM1a,Nike,M1ipsi,140303,1,96,Iridium Oxide,12
-Nike_M1contra,NkM1b,Nike,M1contra,140303,1,96,Iridium Oxide,42
-Nike_PFC,NkPFC,Nike,PFCcontra,140303,1,96,Iridium Oxide,13
-Oreo_M1,OrM1a,Oreo,M1,70501,1.5,96,Platinum,52
-Oreo_PMv,OrPmv,Oreo,PMv,70501,1,96,Platinum,18
-Oreo_M1o,OrM1b,Oreo,M1o,70501,1,96,Platinum,52
-,,Raju,M1,30609,1,NaN,Platinum,NaN
-,,Raju,PMd,30609,1,NaN,Platinum,NaN
-,,Raju,PMd,30723,1,NaN,Platinum,NaN
-Raju_M1_a,RjM1a,Raju,M1,31027,1,64,Platinum,81
-Raju_PMd,RjPMd,Raju,PMd,31027,1,96,Platinum,156
-Raju_M1_b,RjM1b,Raju,M1,50804,1,96,Platinum,21
-Raju_PMv,RjPMv,Raju,PMv,50804,1,96,Platinum,10
-Rico_M1o,RiM1a,Rico,M1o,141006,1.5,NaN,Iridium Oxide,NaN
-Rico_CMA,RiCMA,Rico,CMA,141006,1,NaN,Iridium Oxide,NaN
-Rico_S1o,RiS1a,Rico,S1o,141006,1,NaN,Iridium Oxide,NaN
-Rockstar_M1,RoM1a,Rockstar,M1,40602,1,96,Platinum,211
-Rockstar_PMd,RoPMd,Rockstar,PMd,40602,1,96,Platinum,34
-Roxie_M1_a,RxM1a,Roxie,M1,50329,1,96,Platinum,97
-Roxie_PMv_a,RxPMva,Roxie,PMv,50328,1,96,Platinum,80
-Roxie_PMd_a,RxPMda,Roxie,PMd,50328,1,96,Platinum,10
-Roxie_M1_b,RxM1b,Roxie,M1,60712,1.5,96,Platinum,55
-Roxie_PMv_b,RxPMvb,Roxie,PMv,60712,1,96,Platinum,27
-Roxie_PMd_b,RxPMdb,Roxie,PMd,60712,1,96,Platinum,42
-Roxie_M1_c,RxM1c,Roxie,M1,90729,1.5,96,Iridium Oxide,33
-Roxie_S1,RxS1a,Roxie,S1,90729,1.5,96,Iridium Oxide,6
-Velma_M1,VeM1a,Velma,M1,50809,11,96,Platinum,110
-Velma_PMv,VePMv,Velma,PMv,50809,1,32,Platinum,132
-Velma_PMd,VePMd,Velma,PMd,50809,1,96,Platinum,48
-Youke_M1o,YoM1a,Youkilis,M1o,110818,1.5,NaN,Iridium Oxide,NaN
-Youke_S1o,YoS1a,Youkilis,S1o,110818,1,NaN,Iridium Oxide,NaN
-Youke_CMA,YoCMA,Youkilis,CMA,110818,1,NaN,Iridium Oxide,NaN
-Zizou_M1contra,ZiM1a,Zizou,M1contra,120730,1,96,Iridium Oxide,384
-Zizou_M1ipsi,ZiM1c,Zizou,M1ipsi,120730,1,96,Iridium Oxide,5
-P1_A,P1_A,P1,M1,120210,1.5,96,Platinum,350
-P1_P,P1_P,P1,M1,120210,1.5,96,Platinum,335
-P2_A,P2_A,P2,M1,150504,1.5,88,Platinum,722
-P2_P,P2_P,P2,M1,150504,1.5,88,Platinum,718
+Array Name,Animal,Abbrev,Sex,Brain Area,Implant Date,Electrode Length,Size,Metallization,Number of Recordings
+Athena_PMv,Athena,AtPmv,F,PMv,80123,1,96,Platinum,47
+Athena_M1b,Athena,AtM1b,F,M1,130305,1,128,Iridium Oxide,40
+Athena_M1o,Athena,AtM1o,F,M1o,80123,1,96,Platinum,13
+BigPapi_M1,Big Papi,BiM1,M,M1o,100824,1,96,Iridium Oxide,10
+Boo_PMd_1,Boo,BoPMda,M,PMd,30128,1,96,Platinum,317
+Boo_M1_2,Boo,BoM1b,M,M1,80408,1.5,96,Iridium Oxide,68
+Boo_PMd_2,Boo,BoPMdb,M,PMd,80408,1,96,Platinum,68
+Boo_M1_1,Boo,BoM1a,M,M1,30128,1,96,Platinum,6
+Coco_PMd,Coco,CoPMd,F,PMd,90413,1,96,Platinum,82
+Coco_M1,Coco,CoM1,F,M1,90413,1.5,96,Platinum,68
+Coco_PMv,Coco,CoPMv,F,PMv,90413,1.5,96,Platinum,54
+Jaco_PMv,Jaco,JaPMv,M,PMv,121002,1.5,96,Iridium Oxide,27
+Jaco_PMd,Jaco,JaPMd,M,PMd,121002,1,96,Iridium Oxide,17
+Kiki_M1ipsi,Kiki,KiM1ips,F,M1ipsi,120604,1,96,Iridium Oxide,327
+Kiki_M1contra,Kiki,KiM1con,F,M1con,120604,1,96,Iridium Oxide,51
+Lester_M1l_LH,Lester,LeM1c,M,M1l,150720,1,128,Iridium Oxide,202
+Lester_M1m_LH,Lester,LeM1b,M,M1m,150720,1,128,Iridium Oxide,63
+Lester_M1_RH,Lester,LeM1a,M,M1,110711,1.5,96,Iridium Oxide,38
+Lester_PMd,Lester,LePMd,M,PMd,110711,1.5,96,Platinum,32
+Lester_PMv,Lester,LePMv,M,PMv,110711,1.5,96,Platinum,25
+Mack_M1mb,Mack,MkM1c,M,M1m,71128,1,96,Iridium Oxide,501
+Mack_M1l,Mack,MkM1b,M,M1l,60906,1,96,Platinum,32
+Mack_M1lb,Mack,MkM1d,M,M1l,71128,1,96,Platinum,32
+Mack_M1ma,Mack,MkM1a,M,M1m,60906,1,96,Platinum,28
+Mack_PMd,Mack,MkPMd,M,PMd,60906,1,96,Platinum,14
+Nike_M1contra,Nike,NkM1b,F,M1contra,140303,1,96,Iridium Oxide,42
+Nike_PFC,Nike,NkPFC,F,PFCcontra,140303,1,96,Iridium Oxide,13
+Nike_M1ipsi,Nike,NkM1a,F,M1ipsi,140303,1,96,Iridium Oxide,12
+Nikki_PMv,Nikki,NiPMv,F,PMv,41103,1,96,Platinum,91
+Nikki_M1,Nikki,NiM1,F,M1,41103,1,96,Platinum,86
+Nikki_PMd,Nikki,NiPMd,F,PMd,41103,1,96,Platinum,21
+Oreo_M1,Oreo,OrM1a,F,M1,70501,1.5,96,Platinum,52
+Oreo_M1o,Oreo,OrM1b,F,M1o,70501,1,96,Platinum,52
+Oreo_PMv,Oreo,OrPmv,F,PMv,70501,1,96,Platinum,18
+P1_A,P1,P1_A,F,M1,120210,1.5,96,Platinum,350
+P1_P,P1,P1_P,F,M1,120210,1.5,96,Platinum,335
+P2_A,P2,P2_A,M,M1,150504,1.5,88,Platinum,722
+P2_P,P2,P2_P,M,M1,150504,1.5,88,Platinum,718
+Raju_PMd,Raju,RjPMd,M,PMd,31027,1,96,Platinum,156
+Raju_M1_a,Raju,RjM1a,M,M1,31027,1,64,Platinum,81
+Raju_M1_b,Raju,RjM1b,M,M1,50804,1,96,Platinum,21
+Raju_PMv,Raju,RjPMv,M,PMv,50804,1,96,Platinum,10
+Rockstar_M1,Rockstar,RoM1a,M,M1,40602,1,96,Platinum,211
+Rockstar_PMd,Rockstar,RoPMd,M,PMd,40602,1,96,Platinum,34
+Roxie_M1_a,Roxie,RxM1a,F,M1,50329,1,96,Platinum,97
+Roxie_PMv_a,Roxie,RxPMva,F,PMv,50328,1,96,Platinum,80
+Roxie_M1_b,Roxie,RxM1b,F,M1,60712,1.5,96,Platinum,55
+Roxie_PMd_b,Roxie,RxPMdb,F,PMd,60712,1,96,Platinum,42
+Roxie_M1_c,Roxie,RxM1c,F,M1,90729,1.5,96,Iridium Oxide,33
+Roxie_PMv_b,Roxie,RxPMvb,F,PMv,60712,1,96,Platinum,27
+Roxie_PMd_a,Roxie,RxPMda,F,PMd,50328,1,96,Platinum,10
+Roxie_S1,Roxie,RxS1a,F,S1,90729,1.5,96,Iridium Oxide,6
+Velma_PMv,Velma,VePMv,F,PMv,50809,1,32,Platinum,132
+Velma_M1,Velma,VeM1a,F,M1,50809,11,96,Platinum,110
+Velma_PMd,Velma,VePMd,F,PMd,50809,1,96,Platinum,48
+Zizou_M1contra,Zizou,ZiM1a,F,M1contra,120730,1,96,Iridium Oxide,384
+Zizou_M1ipsi,Zizou,ZiM1c,F,M1ipsi,120730,1,96,Iridium Oxide,5
+,,,,,,,,,
