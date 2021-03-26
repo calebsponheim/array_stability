@@ -13,23 +13,10 @@ array_names = unique({array_data.array_name});
 array_names_for_legend = unique([array_data.array_name_abbrev]);
 colors = hsv(length(array_names));
 [n,~] = size(colors) ;
-rng(123);
 idx = randperm(n) ;
 colors_shuffled = colors ;
 colors_shuffled(idx,:) = colors(:,:);
 colors = colors_shuffled;
-
-% Making Dot Colors (less saturated)
-
-HSV = rgb2hsv(colors);
-% "20% more" saturation:
-HSV(:, 2) = HSV(:, 2) * 0;
-% or add:
-% HSV(:, :, 2) = HSV(:, :, 2) + 0.2;
-HSV(HSV > 1) = 1;  % Limit values
-colors_dots = hsv2rgb(HSV);
-
-
 set(gcf,'pos',[350,200,1000,750])
 
 %%
@@ -37,22 +24,6 @@ set(gcf,'pos',[350,200,1000,750])
 % subplot spans were used to make the plots size correctly.
 subplot(2,2,1:2); hold on;
 
-for iArray = 1:length(array_names)
-    file_count = 1;
-    for iFile = 1:size(array_data,2)
-        if strcmp(array_data(iFile).array_name,array_names{iArray})
-            good_channels_temp(file_count) = array_data(iFile).num_good_channels_corrected / array_data(iFile).total_num_of_channels;
-            relative_days_temp(file_count) = array_data(iFile).relative_days;
-            file_count = file_count + 1;
-        end
-    end
-    if max(relative_days_temp) > 730
-%         plot(relative_days_temp,good_channels_temp,'.','markersize',5,'color',colors_dots(iArray,:));
-    end
-    clear good_channels_temp
-    clear relative_days_temp
-
-end
 iPlotName = 1;
 for iArray = 1:length(array_names)
     %     if contains(array_names{iArray},'P1') || contains(array_names{iArray},'P2')
@@ -69,6 +40,8 @@ for iArray = 1:length(array_names)
     if max(relative_days_temp) > 950
         if strcmp(array_names{iArray},'P1_A') || strcmp(array_names{iArray},'P1_P')
             plot_names{iPlotName} = strrep(array_names_for_legend{iArray},'_',' ');
+            plot(relative_days_temp,good_channels_temp,'.','linewidth',1,'color',colors(iArray,:));
+            
             % First Half
             quad_fit_to_good_channels = polyfit(relative_days_temp(relative_days_temp <= 563),good_channels_temp(relative_days_temp <= 563),1);
             quad_fit_to_good_channels = ...
@@ -83,26 +56,21 @@ for iArray = 1:length(array_names)
             plot(min(relative_days_temp(relative_days_temp > 563)):1:max(relative_days_temp(relative_days_temp > 563)),...
                 quad_fit_to_good_channels,'-','color',colors(iArray,:),'linewidth',2);
             
-            %             plot(relative_days_temp,good_channels_temp,'.','markersize',5,'color',colors_dots(iArray,:));
             iPlotName = iPlotName + 2;
         else
             plot_names{iPlotName} = strrep(array_names_for_legend{iArray},'_',' ');
+            plot(relative_days_temp,good_channels_temp,'.','linewidth',1,'color',colors(iArray,:));
             quad_fit_to_good_channels = polyfit(relative_days_temp,good_channels_temp,1);
             quad_fit_to_good_channels = ...
                 polyval(quad_fit_to_good_channels,min(relative_days_temp):1:max(relative_days_temp));
             
             if max(quad_fit_to_good_channels)>128
                 disp('stop, who are you even')
-            elseif mod(iPlotName,2) == 1
-                plots{iPlotName} = ...
-                    plot(min(relative_days_temp):1:max(relative_days_temp),...
-                    quad_fit_to_good_channels,'-','color',colors(iArray,:),'linewidth',2);
             else
                 plots{iPlotName} = ...
                     plot(min(relative_days_temp):1:max(relative_days_temp),...
                     quad_fit_to_good_channels,'-','color',colors(iArray,:),'linewidth',2);
             end
-            %             plot(relative_days_temp,good_channels_temp,'.','markersize',5,'color',colors_dots(iArray,:));
             iPlotName = iPlotName + 1;
         end
     end
@@ -111,9 +79,6 @@ for iArray = 1:length(array_names)
     clear relative_days_temp
     %     end
 end
-
-
-
 ylabel('Percent Good Channels');
 ylim([0 1]);
 yticks(0:.25:1)
@@ -121,7 +86,7 @@ yticklabels({'0%' '25%' '50%' '75%' '100%'})
 xlim([0 max([array_data.relative_days])]);
 box off
 
-legend([plots{:}],plot_names(~cellfun(@isempty,plot_names)),'location','northeastoutside')
+legend([plots{:}],plot_names(~isempty(plot_names(:))),'location','northeastoutside')
 
 grid on
 xlabel('Days Post-Implantation');
