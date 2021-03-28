@@ -48,11 +48,11 @@ end %iBin
 figure('name','SNR and Channel Yield over time, all arrays','visible','off','color','w');
 box off
 colors = lines(4);
-set(gcf,'pos',[0,0,1000,1250])
+set(gcf,'pos',[0,0,1500,625])
 
 %main plot
-subplot(4,4,1:3); hold on;
-
+subplot(2,4,1:3); hold on;
+yyaxis left
 % creating a de-saturated, transparent version of the line color for the
 % error bars:
 HSV_color = rgb2hsv(colors(1,:));
@@ -111,8 +111,8 @@ for iBin = 1:(size(bins,2)-1)
 end %iBin
 
 %inset plot
-subplot(4,4,4); hold on;
-
+subplot(2,4,4); hold on;
+yyaxis left
 patch([bins(~isnan(std_err_channels))+bin_width fliplr(bins(~isnan(std_err_channels))+bin_width)],[(avg_channels(~isnan(std_err_channels))+std_err_channels(~isnan(std_err_channels)))' fliplr((avg_channels(~isnan(std_err_channels))-std_err_channels(~isnan(std_err_channels)))')],patch_color,'edgecolor','none')
 plot(bins(2:end),avg_channels,'linewidth',2,'Color',colors(1,:));
 xlim([0 50])
@@ -165,8 +165,8 @@ for iBin = 1:(size(bins,2)-1)
     std_err_SNR(iBin) = std_SNR(iBin) / sqrt(sum(averaging_prep(:,iBin) > 0));
 end %iBin
 
-subplot(4,4,5:7); hold on;
-
+subplot(2,4,1:3); hold on;
+yyaxis right
 HSV_color = rgb2hsv(colors(2,:));
 HSV_color(2) = HSV_color(2) * .6;
 patch_color = hsv2rgb(HSV_color);
@@ -183,11 +183,12 @@ box off
 grid on
 xlabel('Days Post-Implantation');
 ylabel('SNR');
-title('c','units','normalized', 'Position', [-0.1,1.05,1]);
+title('a','units','normalized', 'Position', [-0.1,1.05,1]);
 
 %%
 %inset plot for SNR
-subplot(4,4,8); hold on;
+subplot(2,4,4); hold on;
+yyaxis right
 % define bin width in days
 bin_width = 4; %days
 
@@ -233,7 +234,7 @@ plot(bins(2:end),avg_SNR,'linewidth',2,'Color',colors(2,:));
 xlim([0 50])
 ylim(ylim_both)
 
-title('d','units','normalized', 'Position', [-0.1,1.05,1]);
+title('b','units','normalized', 'Position', [-0.1,1.05,1]);
 
 box off
 xlabel('Days Post-Implantation');
@@ -303,8 +304,8 @@ end %iBin
 % set(gcf,'pos',[350,200,1000,750])
 % 
 %main plot
-subplot(4,4,9:11); hold on;
-
+subplot(2,4,5:7); hold on;
+yyaxis left
 % creating a de-saturated, transparent version of the line color for the
 % error bars:
 HSV_color = rgb2hsv(colors(1,:));
@@ -368,8 +369,8 @@ for iBin = 1:(size(bins,2)-1)
 end %iBin
 
 %inset plot
-subplot(4,4,12); hold on;
-
+subplot(2,4,8); hold on;
+yyaxis left
 patch([bins(~isnan(std_err_channels))+bin_width fliplr(bins(~isnan(std_err_channels))+bin_width)],[(avg_channels(~isnan(std_err_channels))+std_err_channels(~isnan(std_err_channels)))' fliplr((avg_channels(~isnan(std_err_channels))-std_err_channels(~isnan(std_err_channels)))')],patch_color,'edgecolor','none')
 plot(bins(2:end),avg_channels,'linewidth',2,'Color',colors(1,:));
 xlim([0 50])
@@ -422,7 +423,8 @@ for iBin = 1:(size(bins,2)-1)
     std_err_SNR(iBin) = std_SNR(iBin) / sqrt(sum(averaging_prep(:,iBin) > 0));
 end %iBin
 
-subplot(4,4,13:15); hold on;
+subplot(2,4,5:7); hold on;
+yyaxis right
 
 HSV_color = rgb2hsv(colors(2,:));
 HSV_color(2) = HSV_color(2) * .6;
@@ -440,12 +442,13 @@ box off
 grid on
 xlabel('Days Post-Implantation');
 ylabel('SNR');
-title('g','units','normalized', 'Position', [-0.1,1.05,1]);
+title('c','units','normalized', 'Position', [-0.1,1.05,1]);
 
 
 
 %% inset plot for SNR
-subplot(4,4,16); hold on;
+subplot(2,4,8); hold on;
+yyaxis right
 % define bin width in days
 bin_width = 4; %days
 
@@ -491,7 +494,7 @@ plot(bins(2:end),avg_SNR,'linewidth',2,'Color',colors(2,:));
 xlim([0 50])
 ylim([0 max(avg_SNR)])
 
-title('h','units','normalized', 'Position', [-0.1,1.05,1]);
+title('d','units','normalized', 'Position', [-0.1,1.05,1]);
 
 box off
 xlabel('Days Post-Implantation');
