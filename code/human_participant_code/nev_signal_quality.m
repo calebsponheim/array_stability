@@ -49,6 +49,9 @@ for iArray = 1:length(subjects)
         
         nev2read = [char(raw(iFile,1)) char(raw(iFile,2))]; % establish exact file to read
         
+        if strcmp(nev2read(1),'R') % R drive was relocated to P drive
+           nev2read(1) = 'P'; 
+        end
         
         nChannelsWithSpikes = 0;
         
@@ -66,6 +69,12 @@ for iArray = 1:length(subjects)
             
         end
             
+        if isempty(data)
+            disp([nev2read ' is empty'])
+            signal_quality{iFile,:} = [{iFolder},{iName},NaN,0,NaN,NaN];
+            continue
+        end
+        
             electrode = double(data.Data.Spikes.Electrode);
             waveforms = double(data.Data.Spikes.Waveform);
             spikesT = double(data.Data.Spikes.TimeStamp)./30;
@@ -170,7 +179,8 @@ for iArray = 1:length(subjects)
                     % Like P1, each .NEV file is associated with one pedestal.
                     % So 1 motor array and 1 sensory array per .NEV file.
                     
-                    P2_range = [1:64 97:112 113:2:127];
+                    %P2_range = [1:64 97:112 113:2:127];
+                    P2_range = 65:96; % running again for sensory only
                     denominator = numel(P2_range);
                     
                     disp([nev2read ' worked! writing to table.'])
@@ -198,6 +208,6 @@ for iArray = 1:length(subjects)
     end %iFile
     
     %% Write Table out to csv
-    outfile = sprintf("%s_%s_processed.csv", subject, pedestal);
+    outfile = sprintf("%s_%s_processed_sensory.csv", subject, pedestal);
     writetable(signal_quality,outfile)
 end
