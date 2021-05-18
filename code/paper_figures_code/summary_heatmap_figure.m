@@ -7,25 +7,31 @@ function summary_heatmap_figure(array_data)
 % different variables: time, array number, SNR, and channel yield.
 array_names = unique({array_data.array_name});
 array_names_abbrev = unique([array_data.array_name_abbrev]);
+array_count = 1;
 % Generating Lifetime Length Order
 for iArray = 1:numel(array_names)
     file_count = 1;
     % three columns:
     %
     % 1 - the array number in the list
-    lifetime_order{iArray,1} = iArray;
-    
+
+    relative_days_temp = [];
     for iFile = 1:size(array_data,2)
-        if strcmp(array_data(iFile).array_name,array_names{iArray}) %&& strcmp(array_data(iFile).species,'NHP')
+        if strcmp(array_data(iFile).array_name,array_names{iArray})
             relative_days_temp(file_count) = array_data(iFile).relative_days;
             file_count = file_count + 1;
         end
     end
 
     % 2 - the maximum relative days of that array
-    
-    lifetime_order{iArray,2} = max(relative_days_temp);
-    lifetime_order{iArray,4} = array_names_abbrev{iArray};
+    if ~isempty(relative_days_temp)
+        
+        lifetime_order{array_count,1} = array_count;
+        lifetime_order{array_count,2} = max(relative_days_temp);
+        lifetime_order{array_count,4} = array_names_abbrev{iArray};
+        
+        array_count = array_count + 1;
+    end
     clear relative_days_temp
     clear file_count
 end
@@ -43,11 +49,11 @@ end
 % (resort by array number)
 %
 
-for iArray = 1:numel(array_names)
+for array_count = 1:size(lifetime_order,1)
     for iFile = 1:length(array_data)
-        if strcmp(array_data(iFile).array_name,array_names{iArray})
-            implant_order(iFile,1) = lifetime_order{([lifetime_order{:,3}] == iArray),1};
-            implant_name{iFile} = array_names_abbrev(iArray);
+        if strcmp(array_data(iFile).array_name_abbrev,lifetime_order{array_count,4})
+            implant_order(iFile,1) = lifetime_order{([lifetime_order{:,3}] == array_count),1};
+            implant_name{iFile} = lifetime_order{array_count,4};
         end
     end
 end
@@ -75,7 +81,7 @@ hold(ax1, 'on');
 xlabel('Days Post-Implantation');
 ylabel('Implant Order (By Lifetime Length)');
 xticks(0:250:3250)  
-ylim([0 max(implant_order)+1])
+ylim([0.1 max(implant_order)+1])
 yticks(0:max(implant_order)+1)
 yticklabels(vertcat(' ',flip(lifetime_order(sort_order,4))))
 

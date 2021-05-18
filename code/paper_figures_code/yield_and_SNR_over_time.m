@@ -194,10 +194,10 @@ bin_width = 4; %days
 
 % define bins, out to the maximum number of relative days in the dataset
 bins = 0:bin_width:max([array_data.relative_days]);
-averaging_prep = zeros(length(array_names),size(bins,2)-1);
+averaging_prep = nan(length(array_names),size(bins,2)-1);
 for iArray = 1:length(array_names)
         file_count = 1;
-        SNR_temp = zeros(size(array_data,2),1);
+        SNR_temp = nan(size(array_data,2),1);
         relative_days_temp = zeros(size(array_data,2),1);
         for iFile = 1:size(array_data,2)
             if strcmp(array_data(iFile).array_name,array_names{iArray}) && strcmp(array_data(iArray).species,'NHP')
@@ -208,7 +208,9 @@ for iArray = 1:length(array_names)
         end %iFile
         
         for iBin = 1:(size(bins,2)-1)
-            averaging_prep(iArray,iBin) = nanmean(SNR_temp((relative_days_temp > bins(iBin)) & (relative_days_temp <= bins(iBin+1))));      
+            if ~isempty(SNR_temp((relative_days_temp > bins(iBin)) & (relative_days_temp <= bins(iBin+1))))
+                averaging_prep(iArray,iBin) = mean(SNR_temp((relative_days_temp > bins(iBin)) & (relative_days_temp <= bins(iBin+1))),'omitnan');      
+            end
         end %iBin
                
         clear SNR_temp
@@ -311,6 +313,9 @@ yyaxis left
 HSV_color = rgb2hsv(colors(1,:));
 HSV_color(2) = HSV_color(2) * .6;
 patch_color = hsv2rgb(HSV_color);
+
+line([564 564],[0 1],'linewidth',3,'color',[194/255, 94/255, 255/255])
+line([900 900],[0 1],'linewidth',3,'color',[155/255, 255/255, 94/255])
 
 % patch() is a great way to create error bars.
 patch([bins(~isnan(std_err_channels))+bin_width fliplr(bins(~isnan(std_err_channels))+bin_width)],[(avg_channels(~isnan(std_err_channels))+std_err_channels(~isnan(std_err_channels)))' fliplr((avg_channels(~isnan(std_err_channels))-std_err_channels(~isnan(std_err_channels)))')],patch_color,'edgecolor','none')
@@ -436,7 +441,6 @@ xlim([0 max([human_array_data.relative_days])])
 ylim([1.5 3.5])
 
 ylim_both = [min(avg_SNR) max(avg_SNR)];
-
 
 box off
 grid on

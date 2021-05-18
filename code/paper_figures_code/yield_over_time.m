@@ -23,8 +23,8 @@ for iThresh = 1:size(yield_threshold,2)
     num_arrays_above_threshold = zeros(numel(time_points_in_days),1);
     num_arrays_in_window = zeros(numel(time_points_in_days),1);
     for iArray = 1:length(array_names)
-        
         array_files_index = cellfun(@(x) strcmp(x,array_names{iArray}),all_array_names_temp);
+        %         if (isempty(array_data(find(array_files_index, 1 )).reason_for_termination) || (sum(strcmp(array_data(find(array_files_index, 1 )).reason_for_termination,'')) > 0))
         array_relative_days = all_days_temp(array_files_index);
         array_yield_thresh = yield_threshold(array_files_index,iThresh)';
         array_num_good_channels = all_good_channels_temp(array_files_index);
@@ -50,12 +50,19 @@ for iThresh = 1:size(yield_threshold,2)
                         count_array_in_proportion = 1;
                     end
                 elseif  max(array_relative_days) < (time_points_in_days(iTimePoint)- one_month)
-                    count_array_in_proportion = 1;
+                    if (isempty(array_data(find(array_files_index, 1 )).reason_for_termination) ...
+                            || (sum(strcmp(array_data(find(array_files_index, 1 )).reason_for_termination,'')) > 0))
+                        count_array_in_proportion = 1;
+                    else
+                        count_array_in_proportion = 0;
+                    end
+                    
                 end
             end
             num_arrays_above_threshold(iTimePoint) = num_arrays_above_threshold(iTimePoint) + file_above_thresh;
             num_arrays_in_window(iTimePoint) = num_arrays_in_window(iTimePoint) + count_array_in_proportion;
         end
+        %         end
     end
     
     for iTimePoint = 1:length(time_points_in_days)

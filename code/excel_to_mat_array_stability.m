@@ -94,6 +94,8 @@ for iSheet = 1:length(sheets_to_read)
                     elseif isempty(cropped_sheet_temp{iFile,10})
                         array_data(iFile+file_count).total_num_of_channels = 96;
                     end
+                    
+                    array_data(iFile+file_count).reason_for_termination = subject_array_info.ReasonForTermination(contains(subject_array_info.Array_Name,array_data(iFile+file_count).array_name));
                 end
             end
         end
