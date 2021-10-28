@@ -7,7 +7,7 @@ function area_histograms(array_data)
 
 
 %%
-figure('name','Histograms','visible','off','color','w');
+figure('name','Histograms','visible','on','color','w');
 set(gcf,'pos',[350,400,1000,500])
 array_names = unique({array_data.array_name});
 all_array_names_temp = {array_data.array_name};

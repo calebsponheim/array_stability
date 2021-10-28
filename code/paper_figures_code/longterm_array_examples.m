@@ -12,7 +12,7 @@ box off
 array_names = unique({array_data.array_name});
 array_names_for_legend = unique([array_data.array_name_abbrev]);
 colors = [[141,211,199];...
-[255,255,179];...
+[255,127,0];...
 [190,186,218];...
 [251,128,114];...
 [128,177,211];...
@@ -48,7 +48,7 @@ for iArray = 1:length(array_names)
             file_count = file_count + 1;
         end
     end
-    if max(relative_days_temp) > 730
+    if max(relative_days_temp) > 950
 %         plot(relative_days_temp,good_channels_temp,'.','markersize',5,'color',colors_dots(iArray,:));
     end
     clear good_channels_temp
@@ -68,48 +68,42 @@ for iArray = 1:length(array_names)
             file_count = file_count + 1;
         end
     end
-    
+     
     if max(relative_days_temp) > 950
         if strcmp(array_names{iArray},'P1_A') || strcmp(array_names{iArray},'P1_P')
             plot_names{iPlotName} = strrep(array_names_for_legend{iArray},'_',' ');
             % First Half
-            quad_fit_to_good_channels = polyfit(relative_days_temp(relative_days_temp <= 563),good_channels_temp(relative_days_temp <= 563),1);
-            quad_fit_to_good_channels = ...
-                polyval(quad_fit_to_good_channels,min(relative_days_temp(relative_days_temp <= 563)):1:max(relative_days_temp(relative_days_temp <= 563)));
+            quad_fit_to_good_channels = fitlm(relative_days_temp(relative_days_temp <= 563),good_channels_temp(relative_days_temp <= 563));
             plots{iPlotName} = ...
-                plot(min(relative_days_temp(relative_days_temp <= 563)):1:max(relative_days_temp(relative_days_temp <= 563)),...
-                quad_fit_to_good_channels,'-','color',colors(color_count,:),'linewidth',2);
-            quad_fit_first = quad_fit_to_good_channels;
+                plot([min(relative_days_temp(relative_days_temp <= 563)),max(relative_days_temp(relative_days_temp <= 563))],...
+                [quad_fit_to_good_channels.Fitted(1),quad_fit_to_good_channels.Fitted(end)],'-','color',colors(color_count,:),'linewidth',2);
+            quad_fit_first = quad_fit_to_good_channels.Fitted;
             % Second Half
-            quad_fit_to_good_channels = polyfit(relative_days_temp(relative_days_temp > 563),good_channels_temp(relative_days_temp > 563),1);
-            quad_fit_to_good_channels = ...
-                polyval(quad_fit_to_good_channels,min(relative_days_temp(relative_days_temp > 563)):1:max(relative_days_temp(relative_days_temp > 563)));
-            plot(min(relative_days_temp(relative_days_temp > 563)):1:max(relative_days_temp(relative_days_temp > 563)),...
-                quad_fit_to_good_channels,'-','color',colors(color_count,:),'linewidth',2);
+            quad_fit_to_good_channels = fitlm(relative_days_temp(relative_days_temp > 563),good_channels_temp(relative_days_temp > 563));
+            plot([min(relative_days_temp(relative_days_temp > 563)),max(relative_days_temp(relative_days_temp > 563))],...
+                [quad_fit_to_good_channels.Fitted(1),quad_fit_to_good_channels.Fitted(end)],'-','color',colors(color_count,:),'linewidth',2);
             
-            %             plot(relative_days_temp,good_channels_temp,'.','markersize',5,'color',colors_dots(iArray,:));
+%                         plot(relative_days_temp,good_channels_temp,'.','markersize',5,'color',colors(color_count,:));
 
-            line([563,575],[quad_fit_first(end),quad_fit_to_good_channels(1)],'LineStyle',':','color',colors(color_count,:),'Linewidth',2)
+            line([563,575],[quad_fit_first(end),quad_fit_to_good_channels.Fitted(1)],'LineStyle',':','color',colors(color_count,:),'Linewidth',2)
             iPlotName = iPlotName + 2;
             color_count = color_count + 1;
         else
             plot_names{iPlotName} = strrep(array_names_for_legend{iArray},'_',' ');
-            quad_fit_to_good_channels = polyfit(relative_days_temp,good_channels_temp,1);
-            quad_fit_to_good_channels = ...
-                polyval(quad_fit_to_good_channels,min(relative_days_temp):1:max(relative_days_temp));
             
-            if max(quad_fit_to_good_channels)>128
+            quad_fit_to_good_channels = fitlm(relative_days_temp,good_channels_temp);
+            
+            
+            if max(quad_fit_to_good_channels.Fitted)>1
                 disp('stop, who are you even')
             elseif mod(iPlotName,2) == 1
-                plots{iPlotName} = ...
-                    plot(min(relative_days_temp):1:max(relative_days_temp),...
-                    quad_fit_to_good_channels,'-','color',colors(color_count,:),'linewidth',2);
+                 plots{iPlotName} = plot([min(relative_days_temp),max(relative_days_temp)],...
+                    [quad_fit_to_good_channels.Fitted(1),quad_fit_to_good_channels.Fitted(end)],'-','color',colors(color_count,:),'linewidth',2);
             else
-                plots{iPlotName} = ...
-                    plot(min(relative_days_temp):1:max(relative_days_temp),...
-                    quad_fit_to_good_channels,'-','color',colors(color_count,:),'linewidth',2);
+                 plots{iPlotName} = plot([min(relative_days_temp),max(relative_days_temp)],...
+                    [quad_fit_to_good_channels.Fitted(1),quad_fit_to_good_channels.Fitted(end)],'-','color',colors(color_count,:),'linewidth',2);
             end
-            %             plot(relative_days_temp,good_channels_temp,'.','markersize',5,'color',colors_dots(iArray,:));
+%                         plot(relative_days_temp,good_channels_temp,'.','markersize',5,'color',colors(color_count,:));
             iPlotName = iPlotName + 1;
             color_count = color_count + 1;
         end
